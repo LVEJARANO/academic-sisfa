@@ -1,0 +1,631 @@
+﻿@page
+@model AcademicoSFA.Pages.ConsultaNotas.IndexModel
+@{
+    ViewData["Title"] = "Mis Notas";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+    /* Estilos específicos para la página de notas */
+    .notas-container {
+        --primary-color: #4361ee;
+        --secondary-color: #3f37c9;
+        --accent-color: #4895ef;
+        --text-color-notas: #2b2d42; /* Renombrado para evitar conflictos */
+        --light-bg: #f8f9fa;
+        --border-color: #dee2e6;
+        --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        --excelente-color: #43aa8b;
+        --buena-color: #90be6d;
+        --regular-color: #f9c74f;
+        --baja-color: #f94144;
+        color: var(--text-color-notas);
+    }
+
+    .notas-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--text-color);
+    }
+
+    /* Sección de encabezado */
+    .header-section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .header-title {
+        margin: 0;
+    }
+
+    .header-title h1 {
+        font-size: 1.8rem;
+        color: var(--primary-color);
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .header-title p {
+        color: var(--secondary-color);
+        margin: 0.5rem 0 0 0;
+    }
+
+    /* Filtros */
+    .filter-section {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        background-color: var(--light-bg);
+        border-radius: 8px;
+        box-shadow: var(--card-shadow);
+    }
+
+    .filter-section select {
+        min-width: 200px;
+        padding: 0.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        font-size: 0.95rem;
+        background-color: white;
+    }
+
+    .filter-section select:focus {
+        border-color: var(--accent-color);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(72, 149, 239, 0.2);
+    }
+
+    /* Card de resumen */
+    .summary-card {
+        background-color: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: var(--card-shadow);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .summary-info {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .summary-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--secondary-color);
+        margin: 0 0 0.8rem 0;
+    }
+
+    .summary-data {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+
+    .summary-item {
+        text-align: center;
+    }
+
+    .summary-label {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 0.3rem;
+    }
+
+    .summary-value {
+        font-size: 1.8rem;
+        font-weight: 700;
+        padding: 0.3rem 0.6rem;
+        border-radius: 6px;
+        min-width: 60px;
+        display: inline-block;
+    }
+
+    /* Acordeón de materias */
+    .materias-accordion {
+        margin-bottom: 2rem;
+    }
+
+    .materia-card {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        background-color: white;
+        overflow: hidden;
+    }
+
+    .materia-header {
+        padding: 1rem;
+        background-color: var(--light-bg);
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background-color 0.2s;
+    }
+
+    .materia-header:hover {
+        background-color: #ebedf0;
+    }
+
+    .materia-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .materia-promedio {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .materia-promedio-label {
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .materia-promedio-value {
+        font-weight: 700;
+        padding: 0.3rem 0.5rem;
+        border-radius: 4px;
+        min-width: 40px;
+        text-align: center;
+    }
+
+    /* Contenido de cada materia */
+    .materia-body {
+        display: none;
+        padding: 0 1rem;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+
+    .materia-body.active {
+        display: block;
+        border-top: 1px solid var(--border-color);
+    }
+
+    /* Resumen de la materia */
+    .materia-summary {
+        padding: 1rem 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        justify-content: space-between;
+        border-bottom: 1px dashed var(--border-color);
+        margin-bottom: 1rem;
+    }
+
+    .dimension-promedio {
+        text-align: center;
+    }
+
+    .dimension-label {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 0.3rem;
+    }
+
+    .dimension-value {
+        font-weight: 600;
+        padding: 0.3rem 0.5rem;
+        border-radius: 4px;
+        min-width: 40px;
+        text-align: center;
+        display: inline-block;
+    }
+
+    /* Tabla de notas */
+    .notas-table-container {
+        overflow-x: auto;
+        margin-bottom: 1rem;
+    }
+
+    .notas-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+    }
+
+    .notas-table th,
+    .notas-table td {
+        padding: 0.75rem 0.5rem;
+        text-align: center;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .notas-table th {
+        background-color: #f1f3f5;
+        font-weight: 600;
+        color: #495057;
+        position: sticky;
+        top: 0;
+    }
+
+    .notas-table tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .nota-value-cell {
+        font-weight: 600;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        min-width: 40px;
+        display: inline-block;
+    }
+
+    .observacion-cell {
+        text-align: left;
+        font-style: italic;
+        color: #666;
+        max-width: 300px;
+    }
+
+    /* Colores por rendimiento */
+    .nota-excelente {
+        background-color: var(--excelente-color);
+        color: white;
+    }
+
+    .nota-buena {
+        background-color: var(--buena-color);
+        color: white;
+    }
+
+    .nota-regular {
+        background-color: var(--regular-color);
+        color: #333;
+    }
+
+    .nota-baja {
+        background-color: var(--baja-color);
+        color: white;
+    }
+
+    /* Estado vacío */
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        background-color: var(--light-bg);
+        border-radius: 8px;
+        margin-top: 1rem;
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        color: #adb5bd;
+        margin-bottom: 1.5rem;
+        display: block;
+    }
+
+    .empty-state h3 {
+        font-size: 1.4rem;
+        color: var(--primary-color);
+        margin-bottom: 0.8rem;
+    }
+
+    .empty-state p {
+        color: #666;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    /* Alerta */
+    .alert {
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .alert-warning {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+    }
+
+    .alert i {
+        font-size: 1.1rem;
+    }
+
+    /* Modo compacto/detallado switch */
+    .view-mode-toggle {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .view-mode-label {
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+    }
+
+    .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 24px;
+    }
+
+    .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider {
+        background-color: var(--primary-color);
+    }
+
+    input:checked + .toggle-slider:before {
+        transform: translateX(26px);
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .header-section {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .filter-section {
+            width: 100%;
+        }
+
+        .summary-card {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .materia-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+    }
+
+    .nota-vacia {
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        color: #999;
+        font-style: italic;
+    }
+
+</style>
+
+<div class="notas-container">
+    <div class="header-section">
+        <div class="header-title">
+            <h1>Mis Notas</h1>
+            <p>Hola, @Model.NombreEstudiante</p>
+        </div>
+
+        @if (Model.PeriodosAcademicos != null && Model.PeriodosAcademicos.Any())
+        {
+            <div class="filter-section">
+                <form method="get" id="filterForm">
+                    <select id="periodoId" name="periodoId" asp-items="@Model.PeriodosAcademicos" onchange="this.form.submit()">
+                        <option value="">-- Seleccionar Periodo --</option>
+                    </select>
+                </form>
+            </div>
+        }
+    </div>
+
+    <div class="view-mode-toggle">
+        <span class="view-mode-label">Modo compacto</span>
+        <label class="toggle-switch">
+            <input type="checkbox" id="viewModeToggle">
+            <span class="toggle-slider"></span>
+        </label>
+        <span class="view-mode-label">Modo detallado</span>
+    </div>
+
+    @if (Model.MateriasConNotas != null && Model.MateriasConNotas.Any())
+    {
+        <div class="materias-accordion">
+            @foreach (var materia in Model.MateriasConNotas)
+            {
+                <div class="materia-card">
+                    <div class="materia-header" onclick="toggleMateria(this)">
+                        <h3 class="materia-title">
+                            <i class="fas fa-book"></i> @materia.NombreMateria
+                        </h3>
+                    </div>
+                    <div class="materia-body">
+
+                        <div class="notas-table-container">
+                            <table class="notas-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Saber (30%)</th>
+                                        <th>Hacer (40%)</th>
+                                        <th>Ser (30%)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < materia.Notas.Count; i++)
+                                    {
+                                        var nota = materia.Notas[i];
+                                        var obs = nota.Observacion?.ToUpper() ?? "";
+
+                                        bool mostrarSaber = obs.Contains("SABER SABER");
+                                        bool mostrarHacer = obs.Contains("SABER HACER");
+                                        bool mostrarSer = obs.Contains("SABER SER");
+
+                                        <tr>
+                                            <td>@(i + 1)</td>
+
+                                            <td>
+                                                @if (mostrarSaber && nota.NotaSaber.HasValue)
+                                                {
+                                                    <span class="nota-value-cell @GetNotaClass(nota.NotaSaber)">
+                                                        @nota.NotaSaber?.ToString("N2")
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="nota-vacia">--</span>
+                                                }
+                                            </td>
+
+                                            <td>
+                                                @if (mostrarHacer && nota.NotaHacer.HasValue)
+                                                {
+                                                    <span class="nota-value-cell @GetNotaClass(nota.NotaHacer)">
+                                                        @nota.NotaHacer?.ToString("N2")
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="nota-vacia">--</span>
+                                                }
+                                            </td>
+
+                                            <td>
+                                                @if (mostrarSer && nota.NotaSer.HasValue)
+                                                {
+                                                    <span class="nota-value-cell @GetNotaClass(nota.NotaSer)">
+                                                        @nota.NotaSer?.ToString("N2")
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="nota-vacia">--</span>
+                                                }
+                                            </td>
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else if (Model.PeriodoId.HasValue)
+    {
+        <div class="empty-state">
+            <i class="fas fa-clipboard-list"></i>
+            <h3>No hay notas registradas para este periodo</h3>
+            <p>Cuando tus profesores registren tus calificaciones, aparecerán aquí.</p>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="fas fa-calendar-alt"></i>
+            <h3>Selecciona un periodo académico</h3>
+            <p>Selecciona un periodo académico para ver tus notas.</p>
+        </div>
+    }
+</div>
+
+<script>
+    // Function to toggle materia content visibility
+    function toggleMateria(element) {
+        const body = element.nextElementSibling;
+        body.classList.toggle('active');
+    }
+
+    // Set active period in select dropdown
+    document.addEventListener('DOMContentLoaded', function() {
+        const periodoSelect = document.getElementById('periodoId');
+        if (periodoSelect) {
+            const periodoId = '@(Model.PeriodoId)';
+            if (periodoId && periodoId !== 'null' && periodoId !== '') {
+                periodoSelect.value = periodoId;
+            }
+        }
+
+        // Initialize all materia cards as collapsed
+        const materiaHeaders = document.querySelectorAll('.materia-header');
+        materiaHeaders.forEach(header => {
+            header.nextElementSibling.classList.remove('active');
+        });
+
+        // View mode toggle functionality
+        const viewModeToggle = document.getElementById('viewModeToggle');
+        const materiaBodies = document.querySelectorAll('.materia-body');
+        
+        if (viewModeToggle) {
+            viewModeToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    // Detailed mode - expand all
+                    materiaBodies.forEach(body => {
+                        body.classList.add('active');
+                    });
+                } else {
+                    // Compact mode - collapse all
+                    materiaBodies.forEach(body => {
+                        body.classList.remove('active');
+                    });
+                }
+            });
+        }
+    });
+</script>
+
+@functions {
+    public string GetNotaClass(decimal? nota)
+    {
+        if (!nota.HasValue) return "";
+
+        return nota.Value switch
+        {
+            var n when n >= 4.0m => "nota-excelente",
+            var n when n >= 3.0m => "nota-buena",
+            var n when n >= 2.0m => "nota-regular",
+            _ => "nota-baja"
+        };
+    }
+}

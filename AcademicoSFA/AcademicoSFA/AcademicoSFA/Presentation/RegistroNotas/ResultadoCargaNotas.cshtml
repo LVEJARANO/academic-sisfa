@@ -1,0 +1,131 @@
+﻿@page
+@model AcademicoSFA.Pages.RegistroNotas.ResultadoCargaModel
+@{
+    ViewData["Title"] = "Resultado de Carga de Notas";
+}
+
+<div class="container-fluid mt-4">
+    <div class="card">
+        <div class="card-header bg-success text-white">
+            <h2 class="mb-0"><i class="fas fa-check-circle me-2"></i> Carga Completada</h2>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-success">
+                <h4 class="alert-heading"><i class="fas fa-clipboard-check me-2"></i> Resumen de la operación</h4>
+                <p>El proceso de carga de notas ha finalizado correctamente. A continuación se muestra un resumen de los resultados:</p>
+            </div>
+
+            <div class="row text-center mb-4">
+                <div class="col-md-4">
+                    <div class="card border-primary mb-3">
+                        <div class="card-body">
+                            <h1 class="display-4 text-primary">@Model.TotalMaterias</h1>
+                            <p class="lead mb-0">Materias procesadas</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-success mb-3">
+                        <div class="card-body">
+                            <h1 class="display-4 text-success">@Model.TotalEstudiantes</h1>
+                            <p class="lead mb-0">Estudiantes procesados</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-info mb-3">
+                        <div class="card-body">
+                            <h1 class="display-4 text-info">@Model.TotalNotas</h1>
+                            <p class="lead mb-0">Notas guardadas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Materia</th>
+                            <th>Curso</th>
+                            <th>Docente</th>
+                            <th class="text-center">Estudiantes</th>
+                            <th class="text-center">Notas Guardadas</th>
+                            <th class="text-center">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var materia in Model.DetallesMaterias)
+                        {
+                            <tr>
+                                <td>@materia.NombreMateria</td>
+                                <td>@materia.Curso</td>
+                                <td>@materia.Docente</td>
+                                <td class="text-center">@materia.CantidadEstudiantes</td>
+                                <td class="text-center">@materia.NotasGuardadas</td>
+                                <td class="text-center">
+                                    @if (materia.Estado == "Completado")
+                                    {
+                                        <span class="badge bg-success">Completado</span>
+                                    }
+                                    else if (materia.Estado == "Parcial")
+                                    {
+                                        <span class="badge bg-warning text-dark">Guardado parcial</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Con errores</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (Model.Errores.Any())
+            {
+                <div class="alert alert-danger mt-4">
+                    <h4 class="alert-heading"><i class="fas fa-exclamation-triangle me-2"></i> Errores durante la carga</h4>
+                    <p>Se encontraron los siguientes errores durante el proceso:</p>
+                    <ul>
+                        @foreach (var error in Model.Errores)
+                        {
+                            <li>@error</li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            <div class="d-flex justify-content-between mt-4">
+                <a href="./Index" class="btn btn-primary">
+                    <i class="fas fa-list me-2"></i> Volver al listado
+                </a>
+                <a href="./Upload" class="btn btn-success">
+                    <i class="fas fa-upload me-2"></i> Cargar otro archivo
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Animación para los contadores
+            $('.display-4').each(function () {
+                const target = parseInt($(this).text(), 10);
+                const $this = $(this);
+                $({ Counter: 0 }).animate({
+                    Counter: target
+                }, {
+                    duration: 1000,
+                    easing: 'swing',
+                    step: function () {
+                        $this.text(Math.ceil(this.Counter));
+                    }
+                });
+            });
+        });
+    </script>
+}

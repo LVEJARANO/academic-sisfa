@@ -1,0 +1,29 @@
+groups:
+  - name: sisfa_alerts
+    rules:
+      - alert: HighLoginFailureRate
+        expr: rate(sisfa_login_attempts_total{status="failure"}[5m]) > 0.1
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Alta tasa de fallos de login en SISFA"
+          description: "Tasa de fallos de login: {{ $value }} intentos/segundo"
+      
+      - alert: HighResponseTime
+        expr: histogram_quantile(0.95, rate(sisfa_consulta_notas_duration_seconds_bucket[5m])) > 0.05
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Alto tiempo de respuesta en consulta de notas"
+          description: "Tiempo de respuesta del 95th percentil: {{ $value }}s"
+      
+      - alert: DatabaseOperationErrors
+        expr: rate(sisfa_database_operations_total{status="failure"}[5m]) > 0.05
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Errores en operaciones de base de datos"
+          description: "Tasa de errores en BD: {{ $value }} ops/segundo"

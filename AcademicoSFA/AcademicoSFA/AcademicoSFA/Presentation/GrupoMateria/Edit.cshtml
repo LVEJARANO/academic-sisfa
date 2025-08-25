@@ -1,0 +1,60 @@
+﻿@page
+@model AcademicoSFA.Pages.GrupoMateria.EditModel
+
+@{
+    ViewData["Title"] = "Editar";
+}
+<div class="row">
+    <div class="col-md-12">
+        <h4>
+            <img alt="Imagen" src="../imagenes/logoSFA.png" width="35" height="35" />
+            Actualizar la asignación de una materia a un Curso
+        </h4>
+    </div>
+</div>
+<hr />
+<div class="alert alert-info mt-3" role="alert">
+    <i class="fa-solid fa-info-circle"></i> &nbsp;Formulario para actualizar la asignación de una materia a un curso.
+</div>
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="GrupoAcadMateria.Id" />
+    <div class="row">
+        <div class="col-3">
+            <div class="form-group">
+                <label asp-for="GrupoAcadMateria.IdGrupoAcad" class="control-label">Grupo Académico</label>
+                <select asp-for="GrupoAcadMateria.IdGrupoAcad" class="form-control" asp-items="ViewBag.IdGrupoAcad"></select>
+                <span asp-validation-for="GrupoAcadMateria.IdGrupoAcad" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="form-group">
+                <label asp-for="GrupoAcadMateria.IdMateria" class="control-label">Materia</label>
+                <select asp-for="GrupoAcadMateria.IdMateria" class="form-control" asp-items="ViewBag.IdMateria"></select>
+                <span asp-validation-for="GrupoAcadMateria.IdMateria" class="text-danger"></span>
+            </div>
+        </div>
+
+    </div>
+
+    <br />
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i>&nbsp;Actualizar
+                </button>
+                <a asp-page="./Index" class="btn btn-secondary">
+                    <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Regresar
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

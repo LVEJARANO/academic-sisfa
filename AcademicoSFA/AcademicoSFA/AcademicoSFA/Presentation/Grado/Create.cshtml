@@ -1,0 +1,55 @@
+﻿@page
+@model AcademicoSFA.Pages.Grado.CreateModel
+
+@{
+    ViewData["Title"] = "Crear grado";
+}
+<div class="row">
+    <div class="col-md-12">
+        <h4>
+            <img alt="Imagen" src="../imagenes/logoSFA.png" width="55" height="55" />
+            Registro del grado
+        </h4>
+    </div>
+</div>
+<hr />
+<div class="alert alert-info mt-3" role="alert">
+    <i class="fa-solid fa-info-circle"></i> &nbsp;Formulario para el registro de grado de 1 a 11.
+</div>
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-4">
+            <div class="form-group">
+                <label class="control-label">Grado</label>
+                <span style="color:maroon;">*</span>
+                <input asp-for="Grado.NomGrado" class="form-control" />
+                <span asp-validation-for="Grado.NomGrado" class="text-danger"></span>
+            </div>
+
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <button type="submit" value="Create" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i>&nbsp;Registrar
+                </button>
+                <a asp-page="Index" class="btn btn-secondary">
+                    <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Regresar
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+</form>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

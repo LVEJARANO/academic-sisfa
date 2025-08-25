@@ -1,0 +1,91 @@
+﻿@page
+@model AcademicoSFA.Pages.Matricula.DeleteModel
+
+@{
+    ViewData["Title"] = "Cambiar de estado la matricula.";
+}
+    <div class="row">
+        <div class="col-md-12">
+            <h4>
+                <img alt="Imagen" src="../imagenes/logoSFA.png" width="35" height="35" />
+                @if (Model.MatriculaModels.Activo == "SI")
+                {
+                    <label>Desactivar matricula</label>
+                }
+                else
+                {
+                    <label>Activar matricula</label>
+                }
+            </h4>
+        </div>
+    </div>
+
+    <hr />
+    <div class="alert alert-info mt-3" role="alert">
+        @if (Model.MatriculaModels.Activo == "SI")
+        {
+            <i class="fa-solid fa-info-circle"></i>
+            <label>Formulario para cambiar de estado a "Inactivo".</label>
+        }
+        else
+        {
+            <i class="fa-solid fa-info-circle"></i>
+            <label>Formulario para cambiar de estado a "Activo".</label>
+        }
+
+    </div>
+    <div class="card shadow-lg">
+        @if (Model.MatriculaModels.Activo == "SI")
+        {
+            <div class="card-header bg-danger text-white text-center">
+
+                <h4 class="mb-0">
+                    <i class="fa-solid fa-exclamation-triangle"></i> Confirmación de Eliminación
+                </h4>
+            </div>
+        }
+        else
+        {
+            <div class="card-header bg-success text-white text-center">
+                <h4 class="mb-0">
+                    <i class="fa-solid fa-check-circle"></i> Confirmación de Activación
+                </h4>
+            </div>
+        }
+        <div class="card-body text-center">
+            <h5 class="text-secondary mb-3">TAM:</h5>
+            <h3 class="fw-bold">@Html.DisplayFor(model => model.MatriculaModels.Codigo)</h3>
+            <h5 class="text-secondary mb-3">Activo:</h5>
+            <h3 class="fw-bold">@Html.DisplayFor(model => model.MatriculaModels.Activo)</h3>
+            @if (Model.MatriculaModels.Activo == "SI")
+            {
+                <div class="alert alert-warning mt-4" role="alert">
+                    <i class="fa-solid fa-info-circle"></i>
+                    <strong>Advertencia:</strong> Al cambiar el estado de la matricula a activo NO, este dejará de aparecer en las listas activas y será como si estuviera eliminado.
+                </div>
+            }
+        </div>
+    </div>
+    <div class="card-footer">
+        <form method="post">
+            @if (Model.MatriculaModels.Activo == "SI")
+            {
+                <input type="hidden" asp-for="MatriculaModels.IdMatricula" />
+                <button type="submit" class="btn btn-danger me-3">
+                    <i class="fa-solid fa-trash"></i>&nbsp;Desactivar
+                </button>
+            }
+            else
+            {
+                <input type="hidden" asp-for="MatriculaModels.IdMatricula" />
+                <button type="submit" class="btn btn-success me-3">
+                    <i class="fa-solid fa-check-circle"></i>&nbsp;Activar
+                </button>
+            }
+            |
+            <a asp-page="./Index" class="btn btn-secondary">
+                <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Regresar
+            </a>
+        </form>
+    </div>
+

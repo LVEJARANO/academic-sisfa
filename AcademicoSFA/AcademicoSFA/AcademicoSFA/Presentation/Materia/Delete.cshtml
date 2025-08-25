@@ -1,0 +1,56 @@
+﻿@page
+@model AcademicoSFA.Pages.Materia.DeleteModel
+
+@{
+    ViewData["Title"] = "¿Desea eliminar la asignatura seleccionada?";
+}
+
+<!-- Contenedor Principal -->
+<div class="container mt-5">
+    <div class="col-md-12">
+        <h4>
+            <img alt="Imagen" src="../imagenes/logoSFA.png" width="35" height="35" />
+            Eliminar  materias
+        </h4>
+    </div>
+</div>
+<hr />
+<div class="alert alert-info mt-3" role="alert">
+    <i class="fa-solid fa-info-circle"></i> &nbsp;Formulario para eliminar las materias.
+</div>
+
+<div class="card shadow-lg">
+    <div class="card-header bg-danger text-white text-center">
+        <h4 class="mb-0">
+            <i class="fa-solid fa-exclamation-triangle"></i> Confirmación de Eliminación
+        </h4>
+    </div>
+    <div class="card-body text-center">
+        <!-- Información de la Materia -->
+        <h5 class="text-secondary mb-3">Nombre de la Materia:</h5>
+        <h3 class="fw-bold">@Html.DisplayFor(model => model.Materia.NomMateria)</h3>
+
+        <!-- Mensaje de Advertencia -->
+        <div class="alert alert-warning mt-4" role="alert">
+            <i class="fa-solid fa-info-circle"></i>
+            <strong>Advertencia:</strong> Una vez eliminada, no podrás recuperar esta información.
+        </div>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="card-footer text-center">
+        <form method="post" class="d-inline">
+            <input type="hidden" asp-for="Materia.Id" />
+            <button type="submit" class="btn btn-danger btn-lg me-2">
+                <i class="fa-solid fa-trash"></i> Eliminar
+            </button>
+        </form>
+        <a asp-page="./Index" class="btn btn-secondary btn-lg">
+            <i class="fa-solid fa-circle-arrow-left"></i> Regresar
+        </a>
+    </div>
+</div>
+</div>
+
+<!-- Scripts -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">

@@ -1,0 +1,86 @@
+﻿@page
+@model AcademicoSFA.Pages.Periodo.DeleteModel
+
+@{
+    ViewData["Title"] = "¿Desea eliminar el periodo " + Model.Periodo.AnioEscolar + " ?";
+}
+<div class="row">
+    <div class="col-md-12">
+        <h4>
+            <img alt="Imagen" src="../imagenes/logoSFA.png" width="35" height="35" />
+            @if (Model.Periodo.Activo == "SI")
+            {
+                <label>Desactivar año</label>
+            }
+            else
+            {
+                <label>Activar año</label>
+            }
+        </h4>
+    </div>
+</div>
+<hr />
+<div class="alert alert-info mt-3" role="alert">
+    @if (Model.Periodo.Activo == "SI")
+    {
+        <i class="fa-solid fa-info-circle"></i>
+        <label>Formulario para cambiar de estado a "Activo=NO".</label>
+    }
+    else
+    {
+        <i class="fa-solid fa-info-circle"></i>
+        <label>Formulario para cambiar de estado a "Activo=SI".</label>
+    }
+
+</div>
+<div class="card shadow-lg">
+    @if (Model.Periodo.Activo == "SI")
+    {
+        <div class="card-header bg-danger text-white text-center">
+
+            <h4 class="mb-0">
+                <i class="fa-solid fa-exclamation-triangle"></i> Confirmación para desactivar el año lectivo
+            </h4>
+        </div>
+    }
+    else
+    {
+        <div class="card-header bg-success text-white text-center">
+            <h4 class="mb-0">
+                <i class="fa-solid fa-check-circle"></i> Confirmación de Activación
+            </h4>
+        </div>
+    }
+
+    <div class="card-body text-center">
+        <h5 class="text-secondary mb-3">Año Lectivo:</h5>
+        <h3 class="fw-bold">@Html.DisplayFor(model => model.Periodo.AnioEscolar)</h3>
+        <h5 class="text-secondary mb-3">Activo:</h5>
+        <h3 class="fw-bold">@Html.DisplayFor(model => model.Periodo.Activo)</h3>
+
+    </div>
+</div>
+
+<br />
+<div class="card-footer">
+    <form method="post">
+        @if (Model.Periodo.Activo == "SI")
+        {
+            <input type="hidden" asp-for="Periodo.Id" />
+            <Button type="submit" class="btn btn-danger me-3">
+                <i class="fa-solid fa-trash"></i>&nbsp;Desactivar
+            </Button>
+        }
+        else
+        {
+            <input type="hidden" asp-for="Periodo.Id" />
+            <Button type="submit" class="btn btn-success me-3">
+                <i class="fa-solid  fa-check-circle"></i>&nbsp;Activar
+            </Button>
+        }
+        |
+        <a asp-page="./Index" class="btn btn-secondary">
+            <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Regresar
+        </a>
+    </form>
+</div>

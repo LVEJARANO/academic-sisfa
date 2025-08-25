@@ -1,0 +1,94 @@
+﻿@page
+@model AcademicoSFA.Pages.Participante.CreateModel
+
+@{
+    ViewData["Title"] = "Crear docente";
+}
+<style>
+    .card {
+        border: none;
+        border-radius: 10px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .btn-lg {
+        padding: 10px 20px;
+        font-size: 1.1rem;
+    }
+
+    .text-danger small {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 5px;
+    }
+
+    .text-danger i {
+        color: #dc3545;
+    }
+</style>
+<div class="row">
+    <div class="col-md-12">
+        <h4>
+            <img alt="Imagen" src="../imagenes/logoSFA.png" width="35" height="35" />
+            Registro de docentes
+        </h4>
+    </div>
+</div>
+<hr />
+<div class="alert alert-info mt-3" role="alert">
+    <i class="fa-solid fa-info-circle"></i> &nbsp;Formulario para el registro de docentes.
+</div>
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title mb-4">
+                <i class="fa-solid fa-user-plus"></i> &nbsp;Datos del docente
+            </h5>
+            <div class="row g-3">
+                <div class="col-md-4 form-floating">
+                    <input asp-for="Participante.Nombre" class="form-control" placeholder="Nombres" />
+                    <span asp-validation-for="Participante.Nombre" class="text-danger"></span>
+                    <label>Nombres *</label>
+                </div>
+                <div class="col-md-4 form-floating">
+                    <input asp-for="Participante.Apellido" class="form-control" placeholder="Apellidos" />
+                    <span asp-validation-for="Participante.Apellido" class="text-danger"></span>
+                    <label>Apellidos *</label>
+                </div>
+                <div class="col-md-4 form-floating">
+                    <input asp-for="Participante.Documento" class="form-control" placeholder="Numero de identificación" />
+                    <span asp-validation-for="Participante.Documento" class="text-danger"></span>
+                    <label>Numero de identificación *</label>
+                </div>
+                <div class="col-md-4 form-floating">
+                    <input asp-for="Participante.Email" class="form-control" type="email" placeholder="Correo institucional" />
+                    <span asp-validation-for="Participante.Email" class="text-danger"></span>
+                    <label>Correo institucional *</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <br />
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <button type="submit" value="Registrar" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i>&nbsp;Registrar
+                </button>
+                <a asp-page="Index" class="btn btn-secondary">
+                    <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Regresar
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

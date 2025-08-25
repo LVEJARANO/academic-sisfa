@@ -1,0 +1,609 @@
+﻿@page
+@model AcademicoSFA.Pages.RegistroNotas.UploadModel
+@{
+    ViewData["Title"] = "Cargar Notas desde CSV";
+}
+<!-- Cabecera principal -->
+<div class="row mb-4 align-items-center p-3 shadow-sm rounded bg-light header-container">
+    <div class="col-auto">
+        <img alt="Logo SFA" src="~/imagenes/logoSFA.png" width="50" height="50" class="rounded-circle border">
+    </div>
+    <div class="col">
+        <h4 class="fw-bold text-primary mb-0">Carga Masiva de Notas</h4>
+        <small class="text-muted"> &nbsp;Utilice esta página para registrar notas de forma masiva mediante un archivo CSV.</small>
+    </div>
+</div>
+
+<div class="container-fluid mt-4">
+    <!-- Card de carga de archivo -->
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">@ViewData["Title"]</h2>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data" id="formCargaNotas">
+                <div class="form-group mb-3">
+                    <label for="file" class="form-label">Seleccione el archivo CSV:</label>
+                    <div class="input-group">
+                        <input type="file" name="file" id="file" class="form-control" accept=".csv" required />
+                        <button type="submit" class="btn btn-primary" id="btnCargarArchivo">
+                            <i class="fas fa-upload me-2"></i> Cargar Archivo
+                        </button>
+                    </div>
+                    <div class="text-danger mt-1">
+                        <span asp-validation-for="File"></span>
+                    </div>
+                    <small class="form-text text-muted mt-2">
+                        <i class="fas fa-info-circle me-1"></i> El archivo debe estar en formato CSV con separador de punto y coma (;) y codificación ISO-8859-1.
+                    </small>
+                </div>
+            </form>
+            
+            <!-- Progreso de carga (visible solo durante la carga) -->
+            <div id="progressContainer" class="mt-3 d-none">
+                <div class="progress" style="height: 25px;">
+                    <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" 
+                         role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                        Procesando...
+                    </div>
+                </div>
+                <div class="text-center mt-2" id="progressText">Iniciando carga del archivo...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mensajes de resultado -->
+    @if (!string.IsNullOrEmpty(TempData["Mensaje"]?.ToString()))
+    {
+        <div class="alert alert-success mt-4 alert-dismissible fade show">
+            <i class="fas fa-check-circle me-2"></i> @TempData["Mensaje"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Resumen de la operación -->
+    @if (Model.TotalNotasGuardadas > 0)
+    {
+        <div class="card mt-4 border-success">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0"><i class="fas fa-clipboard-check me-2"></i> Resumen de la carga</h4>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <div class="border rounded p-3 mb-3 mb-md-0">
+                            <h1 class="display-4 text-primary">@Model.TotalMateriasProcesadas</h1>
+                            <p class="lead mb-0">Materias procesadas</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded p-3 mb-3 mb-md-0">
+                            <h1 class="display-4 text-success">@Model.TotalEstudiantesProcesados</h1>
+                            <p class="lead mb-0">Estudiantes procesados</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded p-3">
+                            <h1 class="display-4 text-info">@Model.TotalNotasGuardadas</h1>
+                            <p class="lead mb-0">Notas guardadas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Errores encontrados -->
+    @if (Model.ErroresEncontrados != null && Model.ErroresEncontrados.Count > 0)
+    {
+        <div class="card mt-4 border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i> Errores encontrados</h4>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    @foreach (var error in Model.ErroresEncontrados)
+                    {
+                        <li class="list-group-item list-group-item-danger">
+                            <i class="fas fa-times-circle me-2"></i> @error
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+
+    <!-- Notificaciones de carga -->
+    @if (Model.Notificaciones != null && Model.Notificaciones.Count > 0)
+    {
+        <div class="card mt-4">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0"><i class="fas fa-bell me-2"></i> Detalles de la carga</h4>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    @foreach (var notificacion in Model.Notificaciones)
+                    {
+                        <div class="list-group-item list-group-item-@notificacion.Tipo">
+                            @if (notificacion.Tipo == "success")
+                            {
+                                <i class="fas fa-check-circle me-2"></i>
+                            }
+                            else if (notificacion.Tipo == "warning")
+                            {
+                                <i class="fas fa-exclamation-circle me-2"></i>
+                            }
+                            else if (notificacion.Tipo == "danger")
+                            {
+                                <i class="fas fa-times-circle me-2"></i>
+                            }
+                            else
+                            {
+                                <i class="fas fa-info-circle me-2"></i>
+                            }
+                            @notificacion.Mensaje
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Tabla de resultados (ya existente) -->
+    @if (Model.CursosNotas != null && Model.CursosNotas.Count > 0)
+    {
+        <div class="alert alert-success mt-4">
+            <i class="fas fa-check-circle me-2"></i> Se han cargado <strong>@Model.CursosNotas.Count materias</strong> con un total de <strong>@Model.CursosNotas.Sum(c => c.Notas.Count) estudiantes</strong>.
+        </div>
+
+        <div class="accordion mt-4" id="accordionCursos">
+            @for (int cursoIndex = 0; cursoIndex < Model.CursosNotas.Count; cursoIndex++)
+            {
+                var curso = Model.CursosNotas[cursoIndex];
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading@(cursoIndex)">
+                        <button class="accordion-button @(cursoIndex == 0 ? "" : "collapsed")" type="button" data-bs-toggle="collapse" data-bs-target="#collapse@(cursoIndex)" aria-expanded="@(cursoIndex == 0 ? "true" : "false")" aria-controls="collapse@(cursoIndex)">
+                            <span class="fw-bold">Curso: @curso.Curso</span> - <span class="ms-2">Materia: @curso.Materia</span> - <span class="ms-2 text-muted">Docente: @curso.Docente</span>
+                            <span class="badge bg-primary ms-2">@curso.Notas.Count estudiantes</span>
+                        </button>
+                    </h2>
+                    <div id="collapse@(cursoIndex)" class="accordion-collapse collapse @(cursoIndex == 0 ? "show" : "")" aria-labelledby="heading@(cursoIndex)" data-bs-parent="#accordionCursos">
+                        <div class="accordion-body p-0">
+                            <div>
+                                <ul class="nav nav-tabs" id="myTab@(cursoIndex)" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link active" id="resumen-tab@(cursoIndex)" data-bs-toggle="tab" href="#resumen@(cursoIndex)" role="tab" aria-controls="resumen@(cursoIndex)" aria-selected="true">Resumen</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="todas-tab@(cursoIndex)" data-bs-toggle="tab" href="#todas@(cursoIndex)" role="tab" aria-controls="todas@(cursoIndex)" aria-selected="false">Todas las Notas</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent@(cursoIndex)">
+                                    <!-- Tab Resumen -->
+                                    <div class="tab-pane fade show active" id="resumen@(cursoIndex)" role="tabpanel" aria-labelledby="resumen-tab@(cursoIndex)">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-hover mb-0">
+                                                <thead class="table-primary">
+                                                    <tr>
+                                                        <th scope="col">N°</th>
+                                                        <th scope="col">Estudiante</th>
+                                                        <th scope="col">TAM</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var estudiante in curso.Notas)
+                                                    {
+                                                        <tr>
+                                                            <td>@estudiante.NumeroEstudiante</td>
+                                                            <td>@estudiante.NombreEstudiante</td>
+                                                            <td>@estudiante.Tam</td>
+                                                            <td>@(estudiante.Notas.ContainsKey("SABER SER - DEFINITIVA") ? estudiante.Notas["SABER SER - DEFINITIVA"]?.ToString("N1") ?? "SN" : "SN")</td>
+                                                            <td>@(estudiante.Notas.ContainsKey("SABER HACER - DEFINITIVA") ? estudiante.Notas["SABER HACER - DEFINITIVA"]?.ToString("N1") ?? "SN" : "SN")</td>
+                                                            <td>@(estudiante.Notas.ContainsKey("SABER SABER - DEFINITIVA") ? estudiante.Notas["SABER SABER - DEFINITIVA"]?.ToString("N1") ?? "SN" : "SN")</td>
+                                                            <td>@(estudiante.Notas.ContainsKey("EXAMEN FINAL") ? estudiante.Notas["EXAMEN FINAL"]?.ToString("N1") ?? "SN" : "SN")</td>
+                                                            <td class="fw-bold bg-light">@(estudiante.Definitiva.HasValue && estudiante.Definitiva.Value > 0 ? estudiante.Definitiva.Value.ToString("N1") : "SN")</td>
+                                                            <td>
+                                                                @if (estudiante.Desempeno == "BAJO")
+                                                                {
+                                                                    <span class="badge bg-danger">BAJO</span>
+                                                                }
+                                                                else if (estudiante.Desempeno == "BÁSICO")
+                                                                {
+                                                                    <span class="badge bg-warning text-dark">BÁSICO</span>
+                                                                }
+                                                                else if (estudiante.Desempeno == "ALTO")
+                                                                {
+                                                                    <span class="badge bg-info">ALTO</span>
+                                                                }
+                                                                else if (estudiante.Desempeno == "SUPERIOR")
+                                                                {
+                                                                    <span class="badge bg-success">SUPERIOR</span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span>@estudiante.Desempeno</span>
+                                                                }
+                                                            </td>
+                                                            <td>@estudiante.Inasistencias</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Tab Todas las Notas -->
+                                    <div class="tab-pane fade" id="todas@(cursoIndex)" role="tabpanel" aria-labelledby="todas-tab@(cursoIndex)">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-hover table-sm mb-0">
+                                                <thead class="table-dark">
+                                                    <tr>
+                                                        <th scope="col">N°</th>
+                                                        <th scope="col">Estudiante</th>
+                                                        <th scope="col">TAM</th>
+                                                        <th colspan="3" class="text-center bg-success text-white">Saber Ser</th>
+                                                        <th colspan="14" class="text-center bg-warning text-dark">Saber Hacer</th>
+                                                        <th colspan="13" class="text-center bg-info text-white">Saber Saber</th>
+                                                        <th scope="col">Exam Final</th>
+                                                        <th scope="col" class="bg-danger text-white">Definitiva</th>
+                                                        <th scope="col">Desempeño</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th></th>
+                                                        <th></th>
+                                                        <th>Het</th>
+                                                        <th>Aut</th>
+                                                        <th>Coe</th>
+                                                        @for (int i = 1; i <= 14; i++)
+                                                        {
+                                                            <th>@i</th>
+                                                        }
+                                                        @for (int i = 15; i <= 27; i++)
+                                                        {
+                                                            <th>@i</th>
+                                                        }
+                                                        <th></th>
+                                                        <th></th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var estudiante in curso.Notas)
+                                                    {
+                                                        <tr>
+                                                            <td>@estudiante.NumeroEstudiante</td>
+                                                            <td>@estudiante.NombreEstudiante</td>
+                                                            <td>@estudiante.Tam</td>
+                                                            <td>@(estudiante.Heteroevaluacion?.ToString("N1") ?? "SN")</td>
+                                                            <td>@(estudiante.Autoevaluacion?.ToString("N1") ?? "SN")</td>
+                                                            <td>@(estudiante.Coevaluacion?.ToString("N1") ?? "SN")</td>
+                                                            @for (int i = 1; i <= 14; i++)
+                                                            {
+                                                                string clave = $"NOTA {i} SABER HACER";
+                                                                <td>@(estudiante.Notas.ContainsKey(clave) ? estudiante.Notas[clave]?.ToString("N1") ?? "SN" : "SN")</td>
+                                                            }
+                                                            @for (int i = 15; i <= 27; i++)
+                                                            {
+                                                                string clave = $"NOTA {i} saber saber";
+                                                                <td>@(estudiante.Notas.ContainsKey(clave) ? estudiante.Notas[clave]?.ToString("N1") ?? "SN" : "SN")</td>
+                                                            }
+                                                            <td>@(estudiante.Notas.ContainsKey("EXAMEN FINAL") ? estudiante.Notas["EXAMEN FINAL"]?.ToString("N1") ?? "SN" : "SN")</td>
+                                                            <td class="fw-bold">@(estudiante.Definitiva.HasValue && estudiante.Definitiva.Value > 0 ? estudiante.Definitiva.Value.ToString("N1") : "SN")</td>
+                                                            <td>
+                                                                @if (estudiante.Desempeno == "BAJO")
+                                                                {
+                                                                    <span class="badge bg-danger">BAJO</span>
+                                                                }
+                                                                else if (estudiante.Desempeno == "BÁSICO")
+                                                                {
+                                                                    <span class="badge bg-warning text-dark">BÁSICO</span>
+                                                                }
+                                                                else if (estudiante.Desempeno == "ALTO")
+                                                                {
+                                                                    <span class="badge bg-info">ALTO</span>
+                                                                }
+                                                                else if (estudiante.Desempeno == "SUPERIOR")
+                                                                {
+                                                                    <span class="badge bg-success">SUPERIOR</span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span>@estudiante.Desempeno</span>
+                                                                }
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+    }
+</div>
+
+<!-- Contenedor de notificaciones Toast -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <!-- Las notificaciones toast se insertarán aquí dinámicamente -->
+</div>
+@section Scripts {
+    <script>
+        // Función para mostrar una notificación toast
+        function showToast(title, message, type = 'success', duration = 5000) {
+            // Generar un ID único para el toast
+            const toastId = 'toast-' + Date.now();
+
+            // Determinar la clase de color según el tipo
+            let bgClass = 'bg-success';
+            let iconClass = 'fa-check-circle';
+
+            if (type === 'warning') {
+                bgClass = 'bg-warning text-dark';
+                iconClass = 'fa-exclamation-circle';
+            } else if (type === 'danger' || type === 'error') {
+                bgClass = 'bg-danger';
+                iconClass = 'fa-times-circle';
+            } else if (type === 'info') {
+                bgClass = 'bg-info text-dark';
+                iconClass = 'fa-info-circle';
+            }
+
+            // Crear el HTML del toast
+            const toastHtml = `
+                        <div id="${toastId}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="${duration}">
+                            <div class="toast-header ${bgClass} text-white">
+                                <i class="fas ${iconClass} me-2"></i>
+                                <strong class="me-auto">${title}</strong>
+                                <small>Ahora</small>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                            <div class="toast-body">
+                                ${message}
+                            </div>
+                        </div>
+                    `;
+
+            // Añadir el toast al contenedor
+            $('.toast-container').append(toastHtml);
+
+            // Inicializar y mostrar el toast
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement);
+            toast.show();
+
+            // Eliminar el toast del DOM después de ocultarse
+            $(toastElement).on('hidden.bs.toast', function () {
+                $(this).remove();
+            });
+        }
+
+        // Función para mostrar notificaciones desde TempData (al cargar la página)
+        function showTempDataToasts() {
+        @if (TempData["ToastTitle"] != null && TempData["ToastMessage"] != null)
+        {
+            <text>
+                        showToast('@TempData["ToastTitle"]', '@TempData["ToastMessage"]', '@(TempData["ToastType"] ?? "success")');
+            </text>
+        }
+
+                // Verificar si hay múltiples notificaciones
+        @if (TempData["MultipleToasts"] != null)
+        {
+            <text>
+                        try {
+                                const toasts = JSON.parse('@Html.Raw(TempData["MultipleToasts"])');
+                                toasts.forEach(toast => {
+                            showToast(toast.Title, toast.Message, toast.Type, toast.Duration);
+                                });
+                            } catch (e) {
+                            console.error('Error al procesar notificaciones toast:', e);
+                            }
+            </text>
+        }
+                }
+
+        // Simulación de progreso en tiempo real
+        function simularProgresoEnTiempoReal() {
+            // Reiniciar el progreso
+            let progress = 0;
+            let etapas = [
+                { hasta: 10, mensaje: "Iniciando proceso de carga...", tiempo: 150 },
+                { hasta: 20, mensaje: "Leyendo archivo CSV...", tiempo: 200 },
+                { hasta: 35, mensaje: "Analizando estructura del archivo...", tiempo: 250 },
+                { hasta: 50, mensaje: "Procesando datos de estudiantes...", tiempo: 300 },
+                { hasta: 65, mensaje: "Calculando promedios...", tiempo: 350 },
+                { hasta: 80, mensaje: "Validando datos...", tiempo: 400 },
+                { hasta: 90, mensaje: "Guardando notas en la base de datos...", tiempo: 450 },
+                { hasta: 95, mensaje: "Finalizando el proceso...", tiempo: 500 }
+            ];
+
+            let etapaActual = 0;
+
+            // Mostrar el contenedor de progreso
+            $("#progressContainer").removeClass("d-none");
+            $("#progressBar").css("width", "0%").attr("aria-valuenow", 0).text("0%");
+            $("#progressText").text(etapas[0].mensaje);
+
+            // Mostrar toasts de inicio
+            showToast("Proceso iniciado", "Se está procesando el archivo CSV", "info");
+
+            // Crear intervalo para actualizar el progreso
+            const progressInterval = setInterval(function () {
+                // Determinar la etapa actual
+                if (etapaActual < etapas.length && progress >= etapas[etapaActual].hasta) {
+                    etapaActual++;
+
+                    // Mostrar un toast con la nueva etapa
+                    if (etapaActual < etapas.length) {
+                        showToast("Progreso", etapas[etapaActual].mensaje, "info");
+                    }
+                }
+
+                // Incrementar el progreso
+                const incremento = etapaActual < etapas.length ?
+                    Math.random() * 2 + 0.5 : // Incremento normal durante etapas
+                    0.2; // Incremento más lento cerca del final
+
+                progress += incremento;
+
+                // Limitar a 95% (el servidor completará el resto)
+                if (progress > 95) {
+                    clearInterval(progressInterval);
+                    progress = 95;
+
+                    // Mensaje final
+                    $("#progressText").text("Finalizando y esperando respuesta del servidor...");
+                    showToast("Casi completado", "Esperando confirmación del servidor", "info");
+                }
+
+                // Actualizar la barra de progreso
+                $("#progressBar").css("width", progress + "%");
+                $("#progressBar").attr("aria-valuenow", progress);
+                $("#progressBar").text(Math.floor(progress) + "%");
+
+                // Actualizar el mensaje según la etapa
+                if (etapaActual < etapas.length) {
+                    $("#progressText").text(etapas[etapaActual].mensaje);
+                }
+
+            }, 300); // Actualizar cada 300ms
+
+            // Guardar el intervalo en una variable global para poder cancelarlo si es necesario
+            window.progressInterval = progressInterval;
+        }
+
+        $(document).ready(function () {
+            // Si hay errores de validación, resaltar el área de carga de archivos
+            if ($("span[data-valmsg-for='File']").text().length > 0) {
+                $("#file").addClass("is-invalid");
+            }
+
+            // Manejar el botón de guardar notas con confirmación mejorada
+            $("#btnGuardarNotas").click(function () {
+                // Modal de confirmación en lugar de confirm básico
+                if (confirm("¿Está seguro de guardar las notas? Esta acción no se puede deshacer.")) {
+                    // Mostrar indicador de carga
+                    $(this).html('<i class="fas fa-spinner fa-spin me-2"></i> Guardando...');
+                    $(this).prop('disabled', true);
+                    $("#formGuardarNotas").submit();
+                }
+            });
+
+            // Mostrar barra de progreso al enviar el formulario de carga
+            $("#formCargaNotas").on("submit", function () {
+                // Validar que se haya seleccionado un archivo
+                if ($("#file")[0].files.length === 0) {
+                    showToast("Error", "Debe seleccionar un archivo CSV", "error");
+                    return false;
+                }
+
+                // Deshabilitar el botón y mostrar carga
+                $("#btnCargarArchivo").html('<i class="fas fa-spinner fa-spin me-2"></i> Procesando...');
+                $("#btnCargarArchivo").prop('disabled', true);
+
+                // Iniciar la simulación de progreso
+                simularProgresoEnTiempoReal();
+
+                return true;
+            });
+
+            // Agregar animación en hover para el botón de carga
+            $("#btnCargarArchivo").hover(
+                function () {
+                    $(this).addClass("pulse-animation");
+                },
+                function () {
+                    $(this).removeClass("pulse-animation");
+                }
+            );
+
+            // Inicializar los toasts al cargar la página
+            showTempDataToasts();
+
+            // Animar los números de resumen
+            $('.display-4').each(function () {
+                const $this = $(this);
+                const target = parseInt($this.text(), 10) || 0;
+
+                $({ Counter: 0 }).animate({
+                    Counter: target
+                }, {
+                    duration: 1000,
+                    easing: 'swing',
+                    step: function () {
+                        $this.text(Math.ceil(this.Counter));
+                    }
+                });
+            });
+        });
+
+        // Añadir estilos CSS dinámicamente
+        $("<style>")
+            .text(`
+                        .pulse-animation {
+                            animation: pulse 1.5s infinite;
+                        }
+
+        @@keyframes pulse {
+                            0% {
+                                transform: scale(1);
+                            }
+                            50% {
+                                transform: scale(1.05);
+                            }
+                            100% {
+                                transform: scale(1);
+                            }
+                        }
+
+                        .progress {
+                            height: 30px;
+                            border-radius: 10px;
+                            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                        }
+
+                        .progress-bar {
+                            font-weight: bold;
+                            font-size: 14px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            transition: width 0.3s ease;
+                        }
+
+                        #progressText {
+                            font-style: italic;
+                            color: #555;
+                            margin-top: 8px;
+                            text-align: center;
+                        }
+
+                        .toast-container {
+                            z-index: 1080;
+                        }
+
+                        .toast {
+                            min-width: 300px;
+                            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                            opacity: 1;
+                        }
+
+                        .toast-header {
+                            padding: 0.75rem 1rem;
+                        }
+
+                        .toast-body {
+                            padding: 1rem;
+                        }
+                    `)
+            .appendTo("head");
+    </script>
+}

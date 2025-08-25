@@ -1,0 +1,115 @@
+﻿@page
+@model AcademicoSFA.Pages.Alumno.CreateModel
+
+@{
+    ViewData["Title"] = "Crear Alumno";
+}
+
+<style>
+    .card {
+        border: none;
+        border-radius: 10px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .btn-lg {
+        padding: 10px 20px;
+        font-size: 1.1rem;
+    }
+
+    .text-danger small {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 5px;
+    }
+
+    .text-danger i {
+        color: #dc3545;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+        <h4>
+            <img alt="Imagen" src="../imagenes/logoSFA.png" width="35" height="35" />
+            Registro de estudiantes
+        </h4>
+    </div>
+</div>
+<hr />
+<div class="alert alert-info mt-3 fade-in" role="alert">
+    <i class="fa-solid fa-info-circle"></i> &nbsp;Formulario para el registro de estudiantes.
+</div>
+<form method="post" class="needs-validation" novalidate>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title mb-4">
+                <i class="fa-solid fa-user-plus"></i> &nbsp;Datos del estudiante
+            </h5>
+            <div class="row g-3">
+                <div class="col-md-4 form-floating">
+                    <input asp-for="Participante.Nombre" id="nombres" class="form-control" placeholder="Nombres" maxlength="30" />
+                    <span asp-validation-for="Participante.Nombre" class="text-danger"></span>
+                    <label class="ms-2" for="nombres">Nombres</label>
+                </div>
+                <div class="col-md-4 form-floating">
+                    <input asp-for="Participante.Apellido" class="form-control" id="Apellidos" placeholder="Apellidos" maxlength="30" />
+                    <span asp-validation-for="Participante.Apellido" class="text-danger"></span>
+                    <label class="ms-2" for="Apellidos">Apellidos *</label>
+                </div>
+                <div class="col-md-4 form-floating">
+                    <input asp-for="Participante.Documento" class="form-control" id="numDoc" placeholder="Numero de identificación" />
+                    <span asp-validation-for="Participante.Documento" class="text-danger"></span>
+                    <label class="ms-2" for="numDoc">Numero de identificación *</label>
+                </div>
+            </div>
+            <br />
+            <div class="row g-3">
+                <div class="col-md-4 form-floating">
+                    <input asp-for="Participante.Email" class="form-control" type="email" placeholder="Correo Electrónico" id="email" />
+                    <span asp-validation-for="Participante.Email" class="text-danger"></span>
+                    <label class="ms-2" for="email">Correo Electrónico *</label>
+                </div>
+                <div class="col-md-4 form-floating">
+                    <input asp-for="Alumno.Codigo" class="form-control" placeholder="TAM" id="tam" />
+                    <span asp-validation-for="Alumno.Codigo" class="text-danger"></span>
+                    <label class="ms-2" for="tam">TAM *</label>
+                </div>
+            </div>
+            <br />
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="form-group">
+                <button type="submit" value="Create" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i>&nbsp;Registrar
+                </button>
+                <a asp-page="Index" class="btn btn-secondary">
+                    <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Regresar
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

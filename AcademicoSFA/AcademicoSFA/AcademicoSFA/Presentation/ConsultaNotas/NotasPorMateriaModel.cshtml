@@ -1,0 +1,876 @@
+﻿@page
+@model AcademicoSFA.Pages.ReportesNotas.NotasPorMateriaModel
+@{
+    ViewData["Title"] = "Notas por Materia";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+    /* Estilos específicos para la página de notas */
+    .notas-container {
+        --primary-color: #4361ee;
+        --secondary-color: #3f37c9;
+        --accent-color: #4895ef;
+        --text-color-notas: #2b2d42;
+        --light-bg: #f8f9fa;
+        --border-color: #dee2e6;
+        --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        --excelente-color: #43aa8b;
+        --buena-color: #90be6d;
+        --regular-color: #f9c74f;
+        --baja-color: #f94144;
+        color: var(--text-color-notas);
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Sección de encabezado */
+    .header-section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .header-title {
+        margin: 0;
+    }
+
+        .header-title h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .header-title p {
+            color: var(--secondary-color);
+            margin: 0.5rem 0 0 0;
+        }
+
+    /* Filtros */
+    .filter-section {
+        background-color: var(--light-bg);
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        box-shadow: var(--card-shadow);
+    }
+
+    .filter-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .filter-group {
+        flex: 1;
+        min-width: 200px;
+    }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 0.95rem;
+            background-color: white;
+        }
+
+    .filter-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.2s;
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+    /* Tabla de estudiantes */
+    .table-container {
+        overflow-x: auto;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 2rem;
+    }
+
+    .notas-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+    }
+
+        .notas-table th,
+        .notas-table td {
+            padding: 0.75rem 0.5rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .notas-table th {
+            background-color: #f1f3f5;
+            font-weight: 600;
+            color: #495057;
+            position: sticky;
+            top: 0;
+        }
+
+        .notas-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+    .nota-value {
+        font-weight: 600;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        min-width: 40px;
+        display: inline-block;
+    }
+
+    /* Colores por rendimiento */
+    .nota-excelente {
+        background-color: var(--excelente-color);
+        color: white;
+    }
+
+    .nota-buena {
+        background-color: var(--buena-color);
+        color: white;
+    }
+
+    .nota-regular {
+        background-color: var(--regular-color);
+        color: #333;
+    }
+
+    .nota-baja {
+        background-color: var(--baja-color);
+        color: white;
+    }
+
+    /* Info card */
+    .info-card {
+        background-color: white;
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .info-card-title {
+        color: var(--primary-color);
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .info-card-content {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .info-card-detail {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .info-label {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 0.3rem;
+    }
+
+    .info-value {
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    /* Estado vacío */
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        background-color: var(--light-bg);
+        border-radius: 8px;
+        margin-top: 1rem;
+    }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #adb5bd;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .empty-state h3 {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+        }
+
+        .empty-state p {
+            color: #666;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+    /* Alerta */
+    .alert {
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .alert-warning {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+    }
+
+    .alert-info {
+        background-color: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+    }
+
+    .alert i {
+        font-size: 1.1rem;
+    }
+
+    /* Acordeón para estudiantes */
+    .estudiante-card {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        background-color: white;
+        overflow: hidden;
+    }
+
+    .estudiante-header {
+        padding: 1rem;
+        background-color: var(--light-bg);
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .estudiante-header:hover {
+            background-color: #ebedf0;
+        }
+
+    .estudiante-title {
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .estudiante-body {
+        display: none;
+        padding: 1rem;
+        border-top: 1px solid var(--border-color);
+    }
+
+        .estudiante-body.active {
+            display: block;
+        }
+
+    /* Pestañas para diferentes tipos de notas */
+    .notas-tabs {
+        display: flex;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 1rem;
+    }
+
+    .notas-tab {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        font-weight: 500;
+    }
+
+        .notas-tab:hover {
+            background-color: #f8f9fa;
+        }
+
+        .notas-tab.active {
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+    .tab-content {
+        display: none;
+    }
+
+        .tab-content.active {
+            display: block;
+        }
+
+    /* Modo vista toggle */
+    .view-mode-toggle {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .view-mode-label {
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+    }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 24px;
+    }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+    input:checked + .toggle-slider {
+        background-color: var(--primary-color);
+    }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+    /* Responsivo */
+    @@media (max-width: 768px) {
+        .header-section {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .filter-row {
+            flex-direction: column;
+        }
+
+        .filter-group {
+            width: 100%;
+        }
+    }
+</style>
+<!-- Cabecera principal -->
+<div class="row mb-4 align-items-center p-3 shadow-sm rounded bg-light header-container">
+    <div class="col-auto">
+        <img alt="Logo SFA" src="~/imagenes/logoSFA.png" width="50" height="50" class="rounded-circle border">
+    </div>
+    <div class="col">
+        <h4 class="fw-bold text-primary mb-0">Reporte de Notas por Materia</h4>
+        <small class="text-muted">&nbsp;Consulta las calificaciones de los estudiantes por materia y grado.</small>
+    </div>
+</div>
+<div class="notas-container">
+    @if (!string.IsNullOrEmpty(Model.MensajeError))
+    {
+        <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle"></i> @Model.MensajeError
+        </div>
+    }
+
+    <div class="filter-section">
+        <form method="get" id="filterForm">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="MateriaId">Materia:</label>
+                    <select id="MateriaId" name="MateriaId" class="form-control">
+                        @foreach (var item in Model.Materias)
+                        {
+                            if (item.Selected)
+                            {
+                                <option value="@item.Value" selected>@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="GrupoId">Curso/Grado:</label>
+                    <select id="GrupoId" name="GrupoId" class="form-control">
+                        @foreach (var item in Model.Grupos)
+                        {
+                            if (item.Selected)
+                            {
+                                <option value="@item.Value" selected>@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="PeriodoId">Periodo Académico:</label>
+                    <select id="PeriodoId" name="PeriodoId" class="form-control">
+                        @foreach (var item in Model.PeriodosAcademicos)
+                        {
+                            if (item.Selected)
+                            {
+                                <option value="@item.Value" selected>@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="filter-buttons">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Consultar
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="window.print()">
+                    <i class="fas fa-print"></i> Imprimir
+                </button>
+            </div>
+        </form>
+    </div>
+
+    @if (Model.MateriaId.HasValue && Model.GrupoId.HasValue && Model.PeriodoId.HasValue)
+    {
+        <div class="info-card">
+            <h3 class="info-card-title">Información del Reporte</h3>
+            <div class="info-card-content">
+                <div class="info-card-detail">
+                    <div class="info-label">Materia:</div>
+                    <div class="info-value">@Model.NombreMateria</div>
+                </div>
+                <div class="info-card-detail">
+                    <div class="info-label">Curso:</div>
+                    <div class="info-value">@Model.Grados</div>
+                </div>
+                <div class="info-card-detail">
+                    <div class="info-label">Periodo:</div>
+                    <div class="info-value">@(Model.PeriodosAcademicos.FirstOrDefault(p => p.Value == Model.PeriodoId.ToString())?.Text ?? "N/A")</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="view-mode-toggle">
+            <span class="view-mode-label">Vista resumen</span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="viewModeToggle">
+                <span class="toggle-slider"></span>
+            </label>
+            <span class="view-mode-label">Ver todas las notas</span>
+        </div>
+
+        @if (Model.EstudiantesNotas != null && Model.EstudiantesNotas.Any())
+        {
+            <div id="vistaTablaSummary" class="table-container">
+                <table class="notas-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Código</th>
+                            <th>Estudiante</th>
+                            <th>Promedio Saber<br>(30%)</th>
+                            <th>Promedio Hacer<br>(40%)</th>
+                            <th>Promedio Ser<br>(30%)</th>
+                            <th>Promedio Final</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.EstudiantesNotas.Count; i++)
+                        {
+                            var estudiante = Model.EstudiantesNotas[i];
+                            <tr>
+                                <td>@(i + 1)</td>
+                                <td>@estudiante.Codigo</td>
+                                <td>@estudiante.NombreCompleto</td>
+                                <td>
+                                    <span class="nota-value @GetNotaClass(estudiante.PromedioSaber)">
+                                        @estudiante.PromedioSaber.ToString("N2")
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="nota-value @GetNotaClass(estudiante.PromedioHacer)">
+                                        @estudiante.PromedioHacer.ToString("N2")
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="nota-value @GetNotaClass(estudiante.PromedioSer)">
+                                        @estudiante.PromedioSer.ToString("N2")
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="nota-value @GetNotaClass(estudiante.PromedioFinal)">
+                                        @estudiante.PromedioFinal.ToString("N2")
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" onclick="mostrarDetalleNotas(@i)">
+                                        <i class="fas fa-list"></i> Detalles
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="vistaDetallada" style="display: none;">
+                @for (int i = 0; i < Model.EstudiantesNotas.Count; i++)
+                {
+                    var estudiante = Model.EstudiantesNotas[i];
+                    <div class="estudiante-card" id="estudiante-@i">
+                        <div class="estudiante-header" onclick="toggleEstudiante(@i)">
+                            <h3 class="estudiante-title">
+                                <i class="fas fa-user-graduate"></i> @estudiante.NombreCompleto - @estudiante.Codigo
+                            </h3>
+                            <div>
+                                <span class="nota-value @GetNotaClass(estudiante.PromedioFinal)">
+                                    @estudiante.PromedioFinal.ToString("N2")
+                                </span>
+                            </div>
+                        </div>
+                        <div class="estudiante-body" id="estudiante-body-@i">
+                            <div class="notas-tabs">
+                                <div class="notas-tab active" onclick="cambiarTab(@i, 'saber')">Saber (30%)</div>
+                                <div class="notas-tab" onclick="cambiarTab(@i, 'hacer')">Hacer (40%)</div>
+                                <div class="notas-tab" onclick="cambiarTab(@i, 'ser')">Ser (30%)</div>
+                            </div>
+
+                            <!-- Tab de Saber -->
+                            <div class="tab-content active" id="tab-saber-@i">
+                                <h4>Notas de Saber - Promedio: <span class="nota-value @GetNotaClass(estudiante.PromedioSaber)">@estudiante.PromedioSaber.ToString("N2")</span></h4>
+                                @if (estudiante.Notas != null && estudiante.Notas.Any(n => n.NotaSaber.HasValue))
+                                {
+                                    <table class="notas-table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Nota</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                int contadorSaber = 1;
+                                                foreach (var nota in estudiante.Notas.Where(n => n.NotaSaber.HasValue))
+                                                {
+                                                    var obs = nota.Observacion?.ToUpper() ?? "";
+                                                    bool mostrarSaber = obs.Contains("SABER SABER");
+                                                    <tr>
+                                                        <td>@(contadorSaber++)</td>
+                                                        <td>
+                                                            @if (mostrarSaber && nota.NotaSaber.HasValue)
+                                                            {
+                                                                <span class="nota-value-cell @GetNotaClass(nota.NotaSaber)">
+                                                                    @nota.NotaSaber?.ToString("N2")
+                                                                </span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="nota-vacia">--</span>
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                                else
+                                {
+                                    <p>No hay notas de Saber registradas.</p>
+                                }
+                            </div>
+
+                            <!-- Tab de Hacer -->
+                            <div class="tab-content" id="tab-hacer-@i">
+                                <h4>Notas de Hacer - Promedio: <span class="nota-value @GetNotaClass(estudiante.PromedioHacer)">@estudiante.PromedioHacer.ToString("N2")</span></h4>
+                                @if (estudiante.Notas != null && estudiante.Notas.Any(n => n.NotaHacer.HasValue))
+                                {
+                                    <table class="notas-table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Nota</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                int contadorHacer = 1;
+                                                foreach (var nota in estudiante.Notas.Where(n => n.NotaHacer.HasValue))
+                                                {
+                                                    var obs = nota.Observacion?.ToUpper() ?? "";
+                                                    bool mostrarHacer = obs.Contains("SABER HACER");
+                                                    <tr>
+                                                        <td>@(contadorHacer++)</td>
+                                                        <td>
+                                                            @if (mostrarHacer && nota.NotaHacer.HasValue)
+                                                            {
+                                                                <span class="nota-value-cell @GetNotaClass(nota.NotaHacer)">
+                                                                    @nota.NotaHacer?.ToString("N2")
+                                                                </span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="nota-vacia">--</span>
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                                else
+                                {
+                                    <p>No hay notas de Hacer registradas.</p>
+                                }
+                            </div>
+
+                            <!-- Tab de Ser -->
+                            <div class="tab-content" id="tab-ser-@i">
+                                <h4>Notas de Ser - Promedio: <span class="nota-value @GetNotaClass(estudiante.PromedioSer)">@estudiante.PromedioSer.ToString("N2")</span></h4>
+                                @if (estudiante.Notas != null && estudiante.Notas.Any(n => n.NotaSer.HasValue))
+                                {
+                                    <table class="notas-table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Nota</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                int contadorSer = 1;
+                                                foreach (var nota in estudiante.Notas.Where(n => n.NotaSer.HasValue))
+                                                {
+                                                    var obs = nota.Observacion?.ToUpper() ?? "";
+                                                    bool mostrarSer = obs.Contains("SABER SER");
+                                                    <tr>
+                                                        <td>@(contadorSer++)</td>
+                                                        <td>
+                                                            @if (mostrarSer && nota.NotaSer.HasValue)
+                                                            {
+                                                                <span class="nota-value-cell @GetNotaClass(nota.NotaSer)">
+                                                                    @nota.NotaSer?.ToString("N2")
+                                                                </span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="nota-vacia">--</span>
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                                else
+                                {
+                                    <p>No hay notas de Ser registradas.</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="fas fa-clipboard-list"></i>
+                <h3>No hay notas registradas</h3>
+                <p>No se encontraron calificaciones para los criterios seleccionados.</p>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="fas fa-filter"></i>
+            <h3>Selecciona los criterios de búsqueda</h3>
+            <p>Para ver el reporte, selecciona una materia, un curso y un periodo académico.</p>
+        </div>
+    }
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Establecer valores seleccionados en filtros
+        const materiaSelect = document.getElementById('MateriaId');
+        const grupoSelect = document.getElementById('GrupoId');
+        const periodoSelect = document.getElementById('PeriodoId');
+
+        if (materiaSelect) {
+            const materiaId = '@(Model.MateriaId)';
+            if (materiaId && materiaId !== 'null' && materiaId !== '') {
+                materiaSelect.value = materiaId;
+            }
+        }
+
+        if (grupoSelect) {
+            const grupoId = '@(Model.GrupoId)';
+            if (grupoId && grupoId !== 'null' && grupoId !== '') {
+                grupoSelect.value = grupoId;
+            }
+        }
+
+        if (periodoSelect) {
+            const periodoId = '@(Model.PeriodoId)';
+            if (periodoId && periodoId !== 'null' && periodoId !== '') {
+                periodoSelect.value = periodoId;
+            }
+        }
+
+        // Configurar el toggle de modo de vista
+        const viewModeToggle = document.getElementById('viewModeToggle');
+        if (viewModeToggle) {
+            viewModeToggle.addEventListener('change', function() {
+                const vistaTablaSummary = document.getElementById('vistaTablaSummary');
+                const vistaDetallada = document.getElementById('vistaDetallada');
+
+                if (this.checked) {
+                    // Vista detallada
+                    vistaTablaSummary.style.display = 'none';
+                    vistaDetallada.style.display = 'block';
+                } else {
+                    // Vista resumen
+                    vistaTablaSummary.style.display = 'block';
+                    vistaDetallada.style.display = 'none';
+                }
+            });
+        }
+    });
+
+    function mostrarDetalleNotas(indice) {
+        // Cambiar al modo detallado
+        document.getElementById('viewModeToggle').checked = true;
+        document.getElementById('vistaTablaSummary').style.display = 'none';
+        document.getElementById('vistaDetallada').style.display = 'block';
+
+        // Mostrar detalle del estudiante específico
+        const estudianteBody = document.getElementById(`estudiante-body-${indice}`);
+        estudianteBody.classList.add('active');
+
+        // Hacer scroll al elemento
+        document.getElementById(`estudiante-${indice}`).scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function toggleEstudiante(indice) {
+        const estudianteBody = document.getElementById(`estudiante-body-${indice}`);
+        estudianteBody.classList.toggle('active');
+    }
+
+        function cambiarTab(indiceEstudiante, tab) {
+        // Remover 'active' de todas las pestañas
+        const tabs = document.querySelectorAll(`#estudiante-body-${indiceEstudiante} .notas-tab`);
+        tabs.forEach(t => t.classList.remove('active'));
+        
+        // Remover 'active' de todos los contenidos
+        const contents = document.querySelectorAll(`#estudiante-body-${indiceEstudiante} .tab-content`);
+        contents.forEach(c => c.classList.remove('active'));
+        
+        // Activar la pestaña seleccionada
+        const selectedTab = Array.from(tabs).find(t => t.textContent.toLowerCase().includes(tab));
+        if (selectedTab) {
+            selectedTab.classList.add('active');
+        }
+        
+        // Activar el contenido seleccionado
+        const selectedContent = document.getElementById(`tab-${tab}-${indiceEstudiante}`);
+        if (selectedContent) {
+            selectedContent.classList.add('active');
+        }
+    }
+</script>
+
+@functions {
+    public string GetNotaClass(decimal? nota)
+    {
+        if (!nota.HasValue) return "";
+
+        return nota.Value switch
+        {
+            var n when n >= 4.0m => "nota-excelente",
+            var n when n >= 3.0m => "nota-buena",
+            var n when n >= 2.0m => "nota-regular",
+            _ => "nota-baja"
+        };
+    }
+}

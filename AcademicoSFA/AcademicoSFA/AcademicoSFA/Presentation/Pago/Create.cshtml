@@ -1,0 +1,79 @@
+﻿@page "{id?}"
+@model AcademicoSFA.Pages.Pago.CreateModel
+
+@{
+    ViewData["Title"] = "Registrar Pago";
+}
+<div class="row mb-4 align-items-center p-3 shadow-sm rounded bg-light">
+    <div class="col-auto">
+        <img alt="Logo SFA" src="~/imagenes/logoSFA.png" width="50" height="50" class="rounded-circle border">
+    </div>
+    <div class="col">
+        <h4 class="fw-bold text-primary mb-0">Pagos</h4>
+        <small class="text-muted">Formulario para gestionar los pagos de mensualidades de los estudiantes.</small>
+    </div>
+</div>
+
+
+<form method="post">
+    <input type="hidden" asp-for="MatriculaId" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="PagoModel.MatriculaId" />
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title mb-4">
+                <i class="fa-solid fa-user-plus"></i> &nbsp;Registrar pago
+            </h5>
+            <div class="row">
+                <div class="col-3 form-floating">
+                    <select asp-for="PagoModel.MesPagado" class="form-control" asp-items="@(ViewData["Meses"] as IEnumerable<SelectListItem>)"></select>
+                    <span asp-validation-for="PagoModel.MesPagado" class="text-danger"></span>
+                    <label>Mes Pagado</label>
+                </div>
+                <div class="col-3 form-floating">
+                    <select asp-for="PagoModel.TipoPago" class="form-control" asp-items="@(ViewData["TipoPagoList"] as IEnumerable<SelectListItem>)"></select>
+                    <span asp-validation-for="PagoModel.TipoPago" class="text-danger"></span>
+                    <label>Tipo de Pago</label>
+                </div>
+                <div class="col-3 form-floating">
+                    <select asp-for="PagoModel.EstadoPago" class="form-control" asp-items="@(ViewData["EstadoPagoList"] as IEnumerable<SelectListItem>)"></select>
+                    <span asp-validation-for="PagoModel.EstadoPago" class="text-danger"></span>
+                    <label>Estado del Pago</label>
+                </div>
+                <div class="col-3 form-floating">
+                    <input asp-for="PagoModel.FechaPago" class="form-control" placeholder="Fecha de Pago" />
+                    <span asp-validation-for="PagoModel.FechaPago" class="text-danger"></span>
+                    <label>Fecha de Pago</label>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-3 form-floating">
+                    <input asp-for="PagoModel.Monto" class="form-control" placeholder="Monto" />
+                    <span asp-validation-for="PagoModel.Monto" class="text-danger"></span>
+                    <label>Monto</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <button type="submit" value="Create" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i>&nbsp;Registrar
+                </button>
+                <a asp-page="Index" class="btn btn-secondary">
+                    <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Regresar
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

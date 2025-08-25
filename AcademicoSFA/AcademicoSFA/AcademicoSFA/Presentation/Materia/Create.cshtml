@@ -1,0 +1,38 @@
+﻿@page
+@model AcademicoSFA.Pages.Materia.CreateModel
+
+@{
+    ViewData["Title"] = "Registrar materias";
+}
+<div class="row">
+    <div class="col-md-12">
+        <h4>
+            <img alt="Imagen" src="../imagenes/logoSFA.png" width="35" height="35" />
+            Registro de materias
+        </h4>
+    </div>
+</div>
+<hr />
+<div class="alert alert-info mt-3" role="alert">
+    <i class="fa-solid fa-info-circle"></i> &nbsp;Formulario para el registro de materias.
+</div>
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-3">
+            <div class="form-group">
+                <label asp-for="Materia.NomMateria" class="control-label"></label>
+                <input asp-for="Materia.NomMateria" class="form-control" />
+                <span asp-validation-for="Materia.NomMateria" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <partial name="Acciones/_RegistrarCrud"/>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

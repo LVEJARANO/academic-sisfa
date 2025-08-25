@@ -1,0 +1,125 @@
+﻿@page
+@model AcademicoSFA.Pages.InicioSesion.OlvideContrasenaModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Contraseña</title>
+
+    <!-- Incluye Bootstrap para un diseño profesional -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #e9ecef;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .recover-container {
+            max-width: 400px;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+        }
+
+            .recover-container:hover {
+                box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.4);
+            }
+
+            .recover-container .logo {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+                .recover-container .logo img {
+                    max-width: 150px;
+                }
+
+            .recover-container h2 {
+                text-align: center;
+                margin-bottom: 20px;
+                color: #343a40;
+            }
+
+            .recover-container .form-group {
+                margin-bottom: 15px;
+            }
+
+            .recover-container .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+        .alert {
+            margin-top: 10px;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="recover-container">
+        <div class="logo">
+            <img src="../imagenes/logoSFA.png" alt="Logo AcademicoSFA" />
+        </div>
+
+        <h2>Recuperar Contraseña</h2>
+
+        <!-- Mostrar mensaje de éxito si existe -->
+        @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+        {
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i> @Model.SuccessMessage
+                <div class="text-center mt-3">
+                    <a href="/InicioSesion/Login" class="btn btn-secondary">Volver al inicio de sesión</a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <!-- Mostrar mensaje de error si existe -->
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle"></i> @Model.ErrorMessage
+                </div>
+            }
+
+            <p class="text-muted mb-4">
+                Ingresa tu correo electrónico y te enviaremos instrucciones para restablecer tu contraseña.
+            </p>
+
+            <!-- Formulario de recuperación de contraseña -->
+            <form method="post">
+                <div class="form-group">
+                    <label for="Email">Correo electrónico</label>
+                    <input type="email" class="form-control" id="Email" name="Email" asp-for="Email" required />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Enviar instrucciones</button>
+            </form>
+
+            <div class="back-link">
+                <a href="/InicioSesion/Login"><i class="fas fa-arrow-left"></i> Volver al inicio de sesión</a>
+            </div>
+        }
+    </div>
+
+    <!-- Script para Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

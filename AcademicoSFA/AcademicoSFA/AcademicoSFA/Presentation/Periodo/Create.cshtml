@@ -1,0 +1,62 @@
+﻿@page
+@model AcademicoSFA.Pages.Periodo.CreateModel
+
+@{
+    ViewData["Title"] = "Crear Periodo";
+}
+<div class="row">
+    <div class="col-md-12">
+        <h4>
+            <img alt="Imagen" src="../imagenes/logoSFA.png" width="35" height="35" />
+            Registro del periodo académico
+        </h4>
+    </div>
+</div>
+<hr />
+<div class="alert alert-info mt-3" role="alert">
+    <i class="fa-solid fa-info-circle"></i> &nbsp;Formulario para el registro del nuevo periodo académico.
+</div>
+
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-4">
+            <div class="form-group">
+                <label asp-for="Periodo.AnioEscolar" class="control-label"></label>
+                <input asp-for="Periodo.AnioEscolar" class="form-control" />
+                <span asp-validation-for="Periodo.AnioEscolar" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <label asp-for="Periodo.Activo" class="control-label"></label>
+                <select asp-for="Periodo.Activo" class="form-control">
+                    <option value="SI">SI</option>
+                    <option value="NO">NO</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <button type="submit" value="Create" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i>&nbsp;Registrar
+                </button>
+                <a asp-page="Index" class="btn btn-secondary">
+                    <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Regresar
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

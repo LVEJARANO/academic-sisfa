@@ -1,0 +1,53 @@
+﻿@page
+@model AcademicoSFA.Pages.Periodo.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<div class="row">
+    <div class="col-md-12">
+        <h4>
+            <img alt="Imagen" src="../imagenes/logoSFA.png" width="35" height="35" />
+            Actualizar  año lectivo
+        </h4>
+    </div>
+</div>
+<hr />
+<div class="alert alert-info mt-3" role="alert">
+    <i class="fa-solid fa-info-circle"></i> &nbsp;Formulario para actualizar el año lectivo.
+</div>
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Periodo.Id" />
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="control-label">Año Lectivo</label>
+                <input asp-for="Periodo.AnioEscolar" class="form-control" />
+                <span asp-validation-for="Periodo.AnioEscolar" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i>&nbsp;Actualizar
+                </button>
+                <a asp-page="./Index" class="btn btn-secondary">
+                    <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Regresar
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

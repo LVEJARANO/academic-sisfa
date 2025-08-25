@@ -1,0 +1,55 @@
+﻿@page
+@model AcademicoSFA.Pages.GrupoAcad.CreateModel
+
+@{
+    ViewData["Title"] = "Crear Grupo Acad";
+}
+<div class="row">
+    <div class="col-md-12">
+        <h4>
+            <img alt="Imagen" src="../imagenes/logoSFA.png" width="35" height="35" />
+            Registro de grupo académico
+        </h4>
+    </div>
+</div>
+<hr />
+<div class="alert alert-info mt-3" role="alert">
+    <i class="fa-solid fa-info-circle"></i> &nbsp;Formulario para el registro de grupos académicos.
+</div>
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="control-label">Grado</label>
+                <select asp-for="GrupoAcad.IdGrado" class="form-control" asp-items="@(new SelectList(Model.Grados, "Id", "NomGrado"))">
+                    <option value="">Seleccionar Grado</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="GrupoAcad.NomGrupo" class="control-label"></label>
+                <input asp-for="GrupoAcad.NomGrupo" class="form-control" />
+                <span asp-validation-for="GrupoAcad.NomGrupo" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="control-label">Año Lectivo</label>
+                <select asp-for="GrupoAcad.IdPeriodo" class="form-control" asp-items="@(new SelectList(Model.Periodos, "Id", "AnioEscolar"))">
+                    <option value="">Seleccionar Periodo</option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+    <br />
+    <partial name="Acciones/_RegistrarCrud"></partial>
+</form>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,454 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - AcademicoSFA</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/AcademicoSFA.styles.css" asp-append-version="true" />
+	<link href="~/lib/fortawesome/fontawesome-free/css/all.css" rel="stylesheet" />
+	<link href="~/lib/fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet" />
+
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+	@await RenderSectionAsync("Styles", required: false)
+	<style>
+		:root {
+			--color-institucional: #bc2b2b;
+			--menu-bg-color: #2d3436;
+			--menu-hover: #34495e;
+			--menu-active: #4a4a4a;
+			--text-color: #ffffff;
+		}
+
+		/* General adjustments */
+		body {
+			overflow-x: hidden;
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		}
+
+		.container-fluid {
+			padding-left: 0;
+			padding-right: 0;
+		}
+
+		/* Sidebar styling */
+		.sidebar {
+			background-color: var(--menu-bg-color);
+			min-height: 100vh;
+			padding: 0;
+			transition: all 0.3s;
+			box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+		}
+
+		.sidebar-header {
+			padding: 20px 15px;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+		}
+
+		.sidebar-brand {
+			font-size: 1.5rem;
+			font-weight: 600;
+			color: var(--text-color);
+			text-decoration: none;
+		}
+
+		/* Navigation styling */
+		.nav-pills .nav-link {
+			color: var(--text-color) !important;
+			border-radius: 0;
+			padding: 12px 15px;
+			margin: 2px 0;
+			display: flex;
+			align-items: center;
+			transition: all 0.2s;
+		}
+
+			.nav-pills .nav-link:hover {
+				background-color: var(--menu-hover);
+				padding-left: 20px;
+			}
+
+			.nav-pills .nav-link i {
+				margin-right: 10px;
+				width: 20px;
+				text-align: center;
+			}
+
+		/* Submenu styling */
+		.submenu {
+			list-style: none;
+			padding-left: 0;
+			background-color: rgba(0, 0, 0, 0.15);
+		}
+
+			.submenu .nav-link {
+				padding-left: 45px;
+				font-size: 0.9rem;
+			}
+
+		/* Dropdown toggle icon */
+		.dropdown-toggle::after {
+			margin-left: auto;
+			content: '\f107';
+			font-family: 'Font Awesome 5 Free';
+			font-weight: 900;
+			border: none;
+			transition: transform 0.2s;
+		}
+
+		.dropdown-toggle[aria-expanded="true"]::after {
+			transform: rotate(180deg);
+		}
+
+		/* Active state styling */
+		.nav-pills .nav-link.active {
+			background-color: var(--menu-active);
+			border-left: 4px solid var(--color-institucional);
+		}
+
+		/* Footer section */
+		.sidebar-footer {
+			padding: 15px;
+			border-top: 1px solid rgba(255, 255, 255, 0.1);
+		}
+
+		/* Logout button */
+		.logout-btn {
+			background-color: rgba(0, 0, 0, 0.2);
+			border: none;
+			transition: all 0.2s;
+		}
+
+			.logout-btn:hover {
+				background-color: var(--color-institucional);
+			}
+
+		/* Content area */
+		.content-area {
+			padding: 20px;
+			min-height: 100vh;
+			background-color: #f8f9fa;
+		}
+
+		/* Responsive adjustments */
+		@@media (max-width: 768px) {
+			.sidebar {
+				width: 65px;
+				overflow: hidden;
+			}
+
+				.sidebar:hover {
+					width: 250px;
+				}
+
+				.sidebar .nav-link span,
+				.sidebar .dropdown-toggle::after {
+					display: none;
+				}
+
+				.sidebar:hover .nav-link span,
+				.sidebar:hover .dropdown-toggle::after {
+					display: inline-block;
+				}
+
+				.sidebar .submenu {
+					position: absolute;
+					left: 65px;
+					top: 0;
+					background-color: var(--menu-bg-color);
+					min-width: 180px;
+					display: none;
+				}
+
+				.sidebar .nav-item:hover .submenu {
+					display: block;
+				}
+
+			.content-area {
+				margin-left: 65px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row flex-nowrap">
+			<div class="sidebar col-auto col-md-3 col-lg-2 d-flex flex-column">
+				<div class="sidebar-header">
+					<a class="sidebar-brand d-flex align-items-center">
+						<i class="fas fa-graduation-cap me-2" style="color: var(--color-institucional);"></i>
+						<span>SISFA</span>
+					</a>
+					<div class="text-white mt-2 small">
+						@if (User.Identity.IsAuthenticated)
+						{
+							<span>Bienvenido/a, @User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value</span>
+						}
+					</div>
+				</div>
+
+				<ul class="nav nav-pills flex-column mt-2" id="menu">
+					<li class="nav-item">
+						<a asp-page="/Dashboard/Dashboard" class="nav-link">
+							<i class="fa fa-gauge"></i>
+							<span>Panel de Control</span>
+						</a>
+					</li>
+
+					@{
+						var userRole = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? "Invitado";
+					}
+
+					<!--************  MENÚ PARA ESTUDIANTES ****************-->
+					@if (userRole == "ESTUDIANTE")
+					{
+						<li class="nav-item">
+							<a asp-page="/ConsultaNotas/Index" class="nav-link">
+								<i class="fa fa-file-alt"></i>
+								<span>Consulta de Notas</span>
+							</a>
+						</li>
+					}
+
+					<!--**************** MENÚ PARA DOCENTES *****************--> 
+					@if (userRole == "DOCENTE")
+					{
+						<li class="nav-item">
+							<a asp-page="/Docente/RegistroNotas" class="nav-link">
+								<i class="fa fa-edit"></i>
+								<span>Registro de Notas</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a asp-page="/Docente/Asistencia" class="nav-link">
+								<i class="fa fa-clipboard-check"></i>
+								<span>Control de Asistencia</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a asp-page="/Docente/MisGrupos" class="nav-link">
+								<i class="fa fa-users"></i>
+								<span>Mis Grupos</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a asp-page="/Docente/DatosPersonales" class="nav-link">
+								<i class="fa fa-user"></i>
+								<span>Datos Personales</span>
+							</a>
+						</li>
+					}
+
+					<!--****************** MENÚ PARA ADMINISTRATIVOS **************************-->
+					@if (userRole == "ADMIN")
+					{
+						<!-- Gestión de Usuarios -->
+						<li class="nav-item">
+							<a class="nav-link dropdown-toggle" href="#sidemenu" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidemenu">
+								<i class="fa fa-users"></i>
+								<span>Gestión de Usuarios</span>
+							</a>
+							<ul class="collapse submenu" id="sidemenu" data-bs-parent="#menu">
+								<li class="nav-item">
+									<a class="nav-link" asp-page="/Administrativo/Index">
+										<i class="fa fa-chalkboard-teacher"></i>
+										<span>Administrativo</span>
+									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" asp-page="/Participante/Index">
+										<i class="fa fa-chalkboard-teacher"></i>
+										<span>Docentes</span>
+									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" asp-page="/Alumno/Index">
+										<i class="fa fa-user-graduate"></i>
+										<span>Alumnos</span>
+									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" asp-page="/Alumno/CargaMasivaModel">
+										<i class="fa fa-user-graduate"></i>
+										<span>Alumnos Masivos</span>
+									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" asp-page="/Password/AsignarContrasena">
+										<i class="fa fa-key"></i>
+										<span>Constraseña</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+
+						<!-- Gestión Alumnos -->
+						<li class="nav-item">
+							<a class="nav-link dropdown-toggle" href="#almunosMenu" data-bs-toggle="collapse" aria-expanded="false" aria-controls="almunosMenu">
+								<i class="fa fa-user-graduate"></i>
+								<span>Gestión Alumnos</span>
+							</a>
+							<ul class="collapse submenu" id="almunosMenu" data-bs-parent="#menu">
+								<li class="nav-item">
+									<a class="nav-link" asp-page="/Matricula/Index">
+										<i class="fa fa-id-card"></i>
+										<span>Matrícula</span>
+									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" asp-page="/Matricula/CargaMasivaMatriculasModel">
+										<i class="fa fa-id-card"></i>
+										<span>Matrícula Masiva</span>
+									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" asp-page="/Pago/Index">
+										<i class="fa fa-money-bill"></i>
+										<span>Pagos</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+						<!-- Gestión Notas -->
+						<li class="nav-item">
+							<a class="nav-link dropdown-toggle" href="#notasMenu" data-bs-toggle="collapse" aria-expanded="false" aria-controls="notasMenu">
+								<i class="fa fa-user-graduate"></i>
+								<span>Gestión notas</span>
+							</a>
+							<ul class="collapse submenu" id="notasMenu" data-bs-parent="#menu">
+								<li class="nav-item">
+									<a class="nav-link" asp-page="/RegistroNotas/Upload">
+										<i class="fa fa-id-card"></i>
+										<span>Registro Notas</span>
+									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" asp-page="/ConsultaNotas/ReportesNotas">
+										<i class="fa fa-id-card"></i>
+										<span>Consulta Notas- General</span>
+									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" asp-page="/ConsultaNotas/NotasPorMateriaModel">
+										<i class="fa fa-id-card"></i>
+										<span>Consulta Notas- Materia</span>
+									</a>
+								</li>								
+								<li class="nav-item">
+									<a class="nav-link" asp-page="/ConsultaNotas/NotasPorEstudiante">
+										<i class="fa fa-id-card"></i>
+										<span>Consulta Notas- Estudiante</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+
+						<!-- Gestión Académica -->
+						<li class="nav-item">
+							<a class="nav-link dropdown-toggle" href="#acadmenu" data-bs-toggle="collapse" aria-expanded="false" aria-controls="acadmenu">
+								<i class="fa fa-tasks"></i>
+								<span>Gestión Académica</span>
+							</a>
+							<ul class="collapse submenu" id="acadmenu" data-bs-parent="#menu">
+								<li class="nav-item">
+									<a class="nav-link" asp-page="/Periodo/Index">
+										<i class="fa fa-calendar"></i>
+										<span>Año Lectivo</span>
+									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" asp-page="/PeriodoAcademico/Index">
+										<i class="fa fa-calendar"></i>
+										<span>Periodos Académicos</span>
+									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" asp-page="/Grado/Index">
+										<i class="fa fa-layer-group"></i>
+										<span>Grado</span>
+									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" asp-page="/GrupoAcad/Index">
+										<i class="fa fa-users"></i>
+										<span>Grupos</span>
+									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" asp-page="/Materia/Index">
+										<i class="fa fa-book"></i>
+										<span>Materias</span>
+									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" asp-page="/GrupoMateria/Index">
+										<i class="fa fa-book-reader"></i>
+										<span>Materias por Curso</span>
+									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" asp-page="/DocenteMateria/Index">
+										<i class="fa fa-chalkboard"></i>
+										<span>Docente-Materias</span>
+									</a>
+								</li>
+
+							</ul>
+						</li>
+
+					}
+				</ul>
+
+				<!-- Footer con botón de cierre de sesión -->
+				<div class="sidebar-footer mt-auto">
+					<form method="post" asp-page="/InicioSesion/Logout" class="w-100">
+						<button type="submit" class="nav-link btn logout-btn text-white w-100">
+							<i class="fas fa-sign-out-alt"></i>
+							<span>Cerrar Sesión</span>
+						</button>
+					</form>
+				</div>
+			</div>
+
+			<!-- Contenido de la página (dinámico) -->
+			<div class="col content-area">
+				<main role="main">
+					@RenderBody() <!-- Aquí se cargará el contenido dinámico de cada página -->
+				</main>
+			</div>
+		</div>
+	</div>
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	@await Component.InvokeAsync("Notyf")
+	@await RenderSectionAsync("Scripts", required: false)
+
+	<script>
+		// Script para manejar el estado activo de los enlaces
+		document.addEventListener('DOMContentLoaded', function () {
+			const currentLocation = window.location.pathname;
+			const navLinks = document.querySelectorAll('.nav-link');
+
+			navLinks.forEach(link => {
+				const href = link.getAttribute('href');
+				if (href && currentLocation.includes(href) && href !== '#') {
+					link.classList.add('active');
+
+					// Si es un enlace en un submenu, expandir el menú padre
+					const parent = link.closest('.submenu');
+					if (parent) {
+						const parentId = parent.getAttribute('id');
+						const parentToggle = document.querySelector(`[href="#${parentId}"]`);
+						parentToggle.setAttribute('aria-expanded', 'true');
+						parent.classList.add('show');
+					}
+				}
+			});
+		});
+	</script>
+</body>
+</html>

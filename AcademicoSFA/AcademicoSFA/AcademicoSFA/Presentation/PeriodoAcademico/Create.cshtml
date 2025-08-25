@@ -1,0 +1,167 @@
+﻿@page
+@model AcademicoSFA.Pages.PeriodoAcademico.CreateModel
+@{
+    ViewData["Title"] = "Crear Periodo Académico";
+}
+
+<style>
+    .form-container {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .header-container {
+        background: linear-gradient(to right, #f8f9fa, #e9ecef);
+        border-left: 4px solid #bc2b2b;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: #495057;
+    }
+
+    .form-control, .form-select {
+        border-radius: 6px;
+        border: 1px solid #ced4da;
+        padding: 0.5rem 0.75rem;
+        transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+    .btn-primary {
+        background-color: #0d6efd;
+        border: none;
+        padding: 0.5rem 1.5rem;
+        border-radius: 6px;
+        transition: all 0.2s;
+    }
+
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            transform: translateY(-1px);
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+        padding: 0.5rem 1.5rem;
+        border-radius: 6px;
+        transition: all 0.2s;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-1px);
+        }
+
+    .info-icon {
+        color: #17a2b8;
+        margin-right: 0.5rem;
+    }
+</style>
+
+<!-- Cabecera principal -->
+<div class="row mb-4 align-items-center p-3 shadow-sm rounded header-container">
+    <div class="col-auto">
+        <img alt="Logo SFA" src="~/imagenes/logoSFA.png" width="50" height="50" class="rounded-circle border">
+    </div>
+    <div class="col">
+        <h4 class="fw-bold text-primary mb-0">Crear Periodo Académico</h4>
+        <small class="text-muted">
+            &nbsp;Defina un nuevo periodo académico para el año lectivo seleccionado
+        </small>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="form-container">
+            <div class="alert alert-light border-start border-info border-4 mb-4" role="alert">
+                <i class="fa-solid fa-info-circle info-icon"></i>
+                Complete todos los campos y asegúrese de que las fechas estén dentro del rango del año lectivo seleccionado.
+            </div>
+
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label asp-for="PeriodoAcademico.IdPeriodo" class="form-label">Año Lectivo</label>
+                        <select asp-for="PeriodoAcademico.IdPeriodo" class="form-select" asp-items="ViewBag.IdPeriodo">
+                            <option value="">-- Seleccione Año Lectivo --</option>
+                        </select>
+                        <span asp-validation-for="PeriodoAcademico.IdPeriodo" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="PeriodoAcademico.NumeroPeriodo" class="form-label">Número de Periodo</label>
+                        <input asp-for="PeriodoAcademico.NumeroPeriodo" class="form-control" type="number" min="1" max="4" />
+                        <span asp-validation-for="PeriodoAcademico.NumeroPeriodo" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="PeriodoAcademico.Nombre" class="form-label">Nombre del Periodo</label>
+                    <input asp-for="PeriodoAcademico.Nombre" class="form-control" placeholder="Ej: Primer Periodo" />
+                    <span asp-validation-for="PeriodoAcademico.Nombre" class="text-danger"></span>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label asp-for="PeriodoAcademico.FechaInicio" class="form-label">Fecha de Inicio</label>
+                        <input asp-for="PeriodoAcademico.FechaInicio" class="form-control" type="date" />
+                        <span asp-validation-for="PeriodoAcademico.FechaInicio" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="PeriodoAcademico.FechaFin" class="form-label">Fecha de Fin</label>
+                        <input asp-for="PeriodoAcademico.FechaFin" class="form-control" type="date" />
+                        <span asp-validation-for="PeriodoAcademico.FechaFin" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-page="Index" class="btn btn-secondary">
+                        <i class="fa-solid fa-arrow-left"></i> &nbsp;Volver
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-save"></i> &nbsp;Guardar Periodo
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // Script para validar que la fecha fin sea posterior a la fecha inicio
+        $(document).ready(function() {
+            $('form').submit(function(e) {
+                var fechaInicio = new Date($('#PeriodoAcademico_FechaInicio').val());
+                var fechaFin = new Date($('#PeriodoAcademico_FechaFin').val());
+
+                if (fechaFin < fechaInicio) {
+                    alert('La fecha de fin debe ser posterior a la fecha de inicio.');
+                    e.preventDefault();
+                }
+            });
+
+            // Añadir clases para mejorar la apariencia al enfocar
+            $('.form-control, .form-select').focus(function() {
+                $(this).closest('.mb-4').addClass('was-validated');
+            });
+        });
+    </script>
+}

@@ -1,0 +1,10 @@
+﻿@model int
+<a asp-page="./Edit" asp-route-id="@Model" class="btn btn-secondary">
+    <i class="fa-solid fa-pen-square"></i>&nbsp;Modificar
+</a> |
+<a asp-page="./Details" asp-route-id="@Model" class="btn btn-info">
+    <i class="fa-solid fa-rectangle-list"></i>&nbsp;Detalles
+</a> |
+<a asp-page="./Delete" asp-route-id="@Model" class="btn btn-danger">
+    <i class="fa-solid fa-trash"></i>&nbsp;Eliminar
+</a>

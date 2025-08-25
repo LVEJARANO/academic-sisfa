@@ -1,0 +1,50 @@
+﻿@page
+@model AcademicoSFA.Pages.GrupoDoc.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>GrupoDocente</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Campo oculto para el ID del grupo docente -->
+            <input type="hidden" asp-for="GrupoDocente.Id" />
+
+            <!-- Dropdown para seleccionar el grupo académico -->
+            <div class="form-group">
+                <label asp-for="GrupoDocente.IdGrupoAcad" class="control-label">Grupo Académico</label>
+                <select asp-for="GrupoDocente.IdGrupoAcad" class="form-control" asp-items="ViewBag.GruposAcad"></select>
+                <span asp-validation-for="GrupoDocente.IdGrupoAcad" class="text-danger"></span>
+            </div>
+
+            <!-- Dropdown para seleccionar el docente -->
+            <div class="form-group">
+                <label asp-for="GrupoDocente.IdParticipante" class="control-label">Docente</label>
+                <select asp-for="GrupoDocente.IdParticipante" class="form-control" asp-items="ViewBag.Docentes"></select>
+                <span asp-validation-for="GrupoDocente.IdParticipante" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

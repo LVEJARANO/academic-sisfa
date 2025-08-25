@@ -1,0 +1,59 @@
+﻿@page
+@model AcademicoSFA.Pages.Participante.DeleteModel
+
+@{
+    ViewData["Title"] = "¿Desea eliminar el docente " + Model.Participante.Nombre + " " + Model.Participante.Apellido + " ?";
+}
+<div class="row">
+    <div class="col-md-12">
+        <h4>
+            <img alt="Imagen" src="../imagenes/logoSFA.png" width="35" height="35" />
+            Eliminar docente
+        </h4>
+    </div>
+</div>
+<hr />
+<div class="card-body">
+    <div class="alert alert-info mt-3" role="alert">
+        <i class="fa-solid fa-info-circle"></i> &nbsp;Formulario para desactivar un docente.
+
+        Al desactivar este docente, no se eliminará permanentemente de la base de datos. Podrás recuperarlo en cualquier momento desde la sección "Restaurar Usuarios". Esta acción solo cambiará su estado a "Inactivo".
+    </div>
+
+    <h3>@ViewData["Title"]</h3>
+    <div>
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Participante.Nombre)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Participante.Nombre)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Participante.Apellido)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Participante.Apellido)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Participante.Documento)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Participante.Documento)
+            </dd>
+        </dl>
+    </div>
+    <div class="card-footer">
+        <form method="post">
+            <input type="hidden" asp-for="Participante.Id" />
+            <Button type="submit" class="btn btn-danger me-3">
+                <i class="fa-solid fa-trash"></i>&nbsp;Eliminar
+            </Button> |
+            <a asp-page="./Index" class="btn btn-secondary">
+                <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Regresar
+            </a>
+        </form>
+    </div>
+
+
+</div>

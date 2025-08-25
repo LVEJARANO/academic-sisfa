@@ -1,0 +1,71 @@
+﻿@page
+@model AcademicoSFA.Pages.Administrativo.EditModel
+
+@{
+    ViewData["Title"] = "Editar";
+}
+
+<style>
+    .bg-custom-header {
+        background-color: #bc2b2b;
+        color: white;
+    }
+</style>
+<div class="row mb-4 align-items-center p-3 shadow-sm rounded bg-light">
+    <div class="col-auto">
+        <img alt="Logo SFA" src="~/imagenes/logoSFA.png" width="50" height="50" class="rounded-circle border">
+    </div>
+    <div class="col">
+        <h4 class="fw-bold text-primary mb-0">Actualizar administrativos</h4>
+        <small class="text-muted">
+            &nbsp;Formulario para actualizar la información de administrativos.
+
+            Aquí puedes modificar los datos de un administrativo existente, como su nombre, apellidos, documento y correo electrónico. Asegúrate de que la información esté correcta antes de guardar los cambios.
+        </small>
+    </div>
+</div>
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Participante.Id" />
+    <div class="row">
+        <div class="col-md-4 form-floating">
+            <input asp-for="Participante.Nombre" class="form-control" placeholder="Nombre" />
+            <span asp-validation-for="Participante.Nombre" class="text-danger"></span>
+            <label>Nombres *</label>
+        </div>
+        <div class="col-md-4 form-floating">
+            <input asp-for="Participante.Apellido" class="form-control" placeholder="Apellidos" />
+            <span asp-validation-for="Participante.Apellido" class="text-danger"></span>
+            <label>Apellidos *</label>
+        </div>
+        <div class="col-md-4 form-floating">
+            <input asp-for="Participante.Documento" class="form-control" placeholder="Numero de identificación" />
+            <span asp-validation-for="Participante.Documento" class="text-danger"></span>
+            <label>Numero de identificación *</label>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-4 form-floating">
+            <input asp-for="Participante.Email" class="form-control" type="email" placeholder="Correo institucional" />
+            <span asp-validation-for="Participante.Email" class="text-danger"></span>
+            <label>Correo institucional *</label>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i>&nbsp;Actualizar
+                </button>
+                <a asp-page="./Index" class="btn btn-secondary">
+                    <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Regresar
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

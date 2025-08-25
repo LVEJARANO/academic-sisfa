@@ -1,0 +1,53 @@
+﻿@page
+@model AcademicoSFA.Pages.GrupoAcad.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<div class="row">
+    <div class="col-md-12">
+        <h4>
+            <img alt="Imagen" src="../imagenes/logoSFA.png" width="35" height="35" />
+            Actualizar grupos académicos
+        </h4>
+    </div>
+</div>
+<hr />
+<div class="alert alert-info mt-3" role="alert">
+    <i class="fa-solid fa-info-circle"></i> &nbsp;Formulario para actualizar los grupos académicos.
+</div>
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="GrupoAcad.Id" />
+    <div class="row">
+        <div class="col-4">
+            <div class="form-group">
+                <label for="GrupoAcad.IdGrado" class="control-label">Grado</label>
+                <select asp-for="GrupoAcad.IdGrado" class="form-control" asp-items="ViewBag.IdGrado"></select>
+                <span asp-validation-for="GrupoAcad.IdGrado" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <label asp-for="GrupoAcad.NomGrupo" class="control-label">Grupo</label>
+                <input asp-for="GrupoAcad.NomGrupo" class="form-control" />
+                <span asp-validation-for="GrupoAcad.NomGrupo" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="form-group">
+                <label for="GrupoAcad.IdPeriodo" class="control-label">Año Lectivo</label>
+                <select asp-for="GrupoAcad.IdPeriodo" class="form-control" asp-items="ViewBag.IdPeriodo"></select>
+                <span asp-validation-for="GrupoAcad.IdPeriodo" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <partial name="Acciones/_EditarCrud" />
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

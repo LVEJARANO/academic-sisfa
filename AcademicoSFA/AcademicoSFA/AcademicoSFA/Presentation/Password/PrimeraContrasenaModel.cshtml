@@ -1,0 +1,252 @@
+﻿@page
+@model AcademicoSFA.Pages.InicioSesion.PrimeraContrasenaModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asignar Primera Contraseña</title>
+
+    <!-- Incluye Bootstrap para un diseño profesional -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #e9ecef;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .recover-container {
+            max-width: 400px;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+        }
+
+            .recover-container:hover {
+                box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.4);
+            }
+
+            .recover-container .logo {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+                .recover-container .logo img {
+                    max-width: 150px;
+                }
+
+            .recover-container h2 {
+                text-align: center;
+                margin-bottom: 20px;
+                color: #343a40;
+            }
+
+            .recover-container .form-group {
+                margin-bottom: 15px;
+            }
+
+            .recover-container .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+        .alert {
+            margin-top: 10px;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #6c757d;
+        }
+
+        .password-strength {
+            height: 5px;
+            margin-top: 5px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="recover-container">
+        <div class="logo">
+            <img src="../imagenes/logoSFA.png" alt="Logo AcademicoSFA" />
+        </div>
+
+        <h2>Asignar Primera Contraseña</h2>
+
+        <!-- Mostrar mensaje de éxito si existe -->
+        @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+        {
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i> @Model.SuccessMessage
+                <div class="text-center mt-3">
+                    <a href="/InicioSesion/Login" class="btn btn-secondary">Ir al inicio de sesión</a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <!-- Mostrar mensaje de error si existe -->
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle"></i> @Model.ErrorMessage
+                </div>
+            }
+
+            <p class="text-muted mb-4">
+                Por favor, ingresa tu correo electrónico y documento de identidad para verificar tu cuenta. Luego podrás establecer tu contraseña.
+            </p>
+
+            <!-- Formulario de asignación de primera contraseña -->
+            @if (Model.IdentidadVerificada)
+            {
+                <!-- Paso 2: Establecer contraseña -->
+                <form method="post" id="passwordForm" asp-page-handler="EstablecerContrasena">
+                    <!-- Mostrar errores de validación -->
+                    @if (!ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                                {
+                                    <li>@error.ErrorMessage</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+
+                    <div class="form-group mb-3">
+                        <label for="Password">Nueva Contraseña</label>
+                        <div class="password-wrapper">
+                            <input type="password" class="form-control" id="Password" name="Password" asp-for="Password" required minlength="5" />
+                            <button type="button" class="toggle-password" aria-label="Mostrar/Ocultar Contraseña">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength w-100 bg-light"></div>
+                        <small class="password-feedback text-muted mt-1">Mínimo 5 caracteres</small>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="ConfirmPassword">Confirmar Contraseña</label>
+                        <div class="password-wrapper">
+                            <input type="password" class="form-control" id="ConfirmPassword" name="ConfirmPassword" asp-for="ConfirmPassword" required minlength="5" />
+                            <button type="button" class="toggle-password" aria-label="Mostrar/Ocultar Contraseña">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <span id="confirmPassFeedback" class="text-danger"></span>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <input type="hidden" asp-for="IdParticipante" />
+                    <button type="submit" class="btn btn-primary">Establecer Contraseña</button>
+                </form>
+            }
+            else
+            {
+                <!-- Paso 1: Verificación de identidad -->
+                <form method="post" id="passwordForm" asp-page-handler="VerificarIdentidad">
+                    <div class="form-group mb-3">
+                        <label for="Email">Correo electrónico</label>
+                        <input type="email" class="form-control" id="Email" name="Email" asp-for="Email" required />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="Documento">Documento de identidad</label>
+                        <input type="text" class="form-control" id="Documento" name="Documento" asp-for="Documento" required />
+                        <span asp-validation-for="Documento" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Verificar identidad</button>
+                </form>
+            }
+
+            <div class="back-link">
+                <a href="/InicioSesion/Login"><i class="fas fa-arrow-left"></i> Volver al inicio de sesión</a>
+            </div>
+        }
+    </div>
+
+    <!-- Script para Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Mostrar/ocultar contraseña
+            $(".toggle-password").click(function() {
+                const passwordField = $(this).siblings('input');
+                const type = passwordField.attr('type') === 'password' ? 'text' : 'password';
+                passwordField.attr('type', type);
+                $(this).find('i').toggleClass('fa-eye fa-eye-slash');
+            });
+
+            // Validación de contraseñas y medidor de fortaleza
+            $("#Password").on('input', function() {
+                const password = $(this).val();
+                let strength = 0;
+
+                // Criterios de fortaleza
+                if (password.length >= 5) strength += 20;
+                if (password.length >= 8) strength += 20;
+                if (password.match(/[a-z]+/)) strength += 20;
+                if (password.match(/[A-Z]+/)) strength += 20;
+                if (password.match(/[0-9]+/)) strength += 20;
+
+                // Actualizar el indicador visual
+                const $strengthBar = $(".password-strength");
+                $strengthBar.css("width", strength + "%");
+
+                if (strength < 40) {
+                    $strengthBar.css("background-color", "#dc3545"); // Rojo - débil
+                    $(".password-feedback").text("Contraseña débil");
+                } else if (strength < 80) {
+                    $strengthBar.css("background-color", "#ffc107"); // Amarillo - medio
+                    $(".password-feedback").text("Contraseña media");
+                } else {
+                    $strengthBar.css("background-color", "#198754"); // Verde - fuerte
+                    $(".password-feedback").text("Contraseña fuerte");
+                }
+            });
+
+            // Validación de coincidencia de contraseñas
+            $("#ConfirmPassword").on('input', function() {
+                const password = $("#Password").val();
+                const confirmPassword = $(this).val();
+
+                if (password !== confirmPassword && confirmPassword.length > 0) {
+                    $("#confirmPassFeedback").text("Las contraseñas no coinciden");
+                } else {
+                    $("#confirmPassFeedback").text("");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+﻿@page
+@model AcademicoSFA.Pages.Alumno.CargaMasivaModel
+
+@{
+    ViewData["Title"] = "Carga Masiva de Alumnos";
+}
+
+<style>
+    .card {
+        border: none;
+        border-radius: 10px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .btn-lg {
+        padding: 10px 20px;
+        font-size: 1.1rem;
+    }
+
+    .text-danger small {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 5px;
+    }
+
+    .text-danger i {
+        color: #dc3545;
+    }
+
+    .steps-container {
+        margin-top: 20px;
+        margin-bottom: 30px;
+    }
+
+    .step {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .step-number {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: #007bff;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        font-weight: bold;
+    }
+
+    .step-content {
+        flex: 1;
+    }
+</style>
+
+<!-- Cabecera principal -->
+<div class="row mb-4 align-items-center p-3 shadow-sm rounded bg-light header-container">
+    <div class="col-auto">
+        <img alt="Logo SFA" src="~/imagenes/logoSFA.png" width="50" height="50" class="rounded-circle border">
+    </div>
+    <div class="col">
+        <h4 class="fw-bold text-primary mb-0">Carga Masiva de Estudiantes</h4>
+        <small class="text-muted">  &nbsp;Utilice esta página para cargar múltiples estudiantes de forma masiva mediante un archivo Excel.</small>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="card-title mb-4">
+            <i class="fa-solid fa-file-excel"></i> &nbsp;Instrucciones
+        </h5>
+
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <strong>Descargue la plantilla Excel</strong> - Utilice el botón de descarga para obtener la plantilla con el formato correcto.
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <strong>Complete la información</strong> - Llene la plantilla con los datos de los alumnos que desea registrar.
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <strong>Suba el archivo</strong> - Seleccione el archivo Excel completado y haga clic en "Cargar Alumnos".
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <a asp-page-handler="DescargarPlantilla" class="btn btn-success">
+                    <i class="fa-solid fa-download"></i>&nbsp;Descargar Plantilla Excel
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title mb-4">
+            <i class="fa-solid fa-upload"></i> &nbsp;Cargar Archivo Excel
+        </h5>
+
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Seleccione archivo Excel:</label>
+                        <input type="file" name="archivoExcel" class="form-control" accept=".xlsx, .xls" required />
+                        <small class="text-muted">Solo se permiten archivos Excel (.xlsx, .xls)</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-upload"></i>&nbsp;Cargar Alumnos
+                    </button>
+                    <a asp-page="Index" class="btn btn-secondary">
+                        <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Regresar
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model.ResultadoCarga != null)
+{
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <h5 class="card-title mb-4">
+                <i class="fa-solid fa-list-check"></i> &nbsp;Resultado de la Carga
+            </h5>
+
+            @if (Model.ResultadoCarga.RegistrosExitosos > 0)
+            {
+                <div class="alert alert-success">
+                    <i class="fa-solid fa-check-circle"></i> &nbsp;Se han cargado correctamente <strong>@Model.ResultadoCarga.RegistrosExitosos</strong> alumnos.
+                </div>
+            }
+
+            @if (Model.ResultadoCarga.ErroresValidacion.Count > 0)
+            {
+                <div class="alert alert-danger">
+                    <i class="fa-solid fa-exclamation-triangle"></i> &nbsp;Se encontraron <strong>@Model.ResultadoCarga.ErroresValidacion.Count</strong> errores durante la carga:
+                    <ul class="mt-2">
+                        @foreach (var error in Model.ResultadoCarga.ErroresValidacion)
+                        {
+                            <li>@error</li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            @if (Model.ResultadoCarga.RegistrosExistentes > 0)
+            {
+                <div class="alert alert-warning">
+                    <i class="fa-solid fa-exclamation-circle"></i> &nbsp;Se encontraron <strong>@Model.ResultadoCarga.RegistrosExistentes</strong> registros que ya existían en el sistema.
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

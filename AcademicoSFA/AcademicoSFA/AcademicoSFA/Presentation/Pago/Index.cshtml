@@ -1,0 +1,175 @@
+﻿@page
+@using X.PagedList.Mvc.Core
+@model AcademicoSFA.Pages.Pago.IndexModel
+@{
+    ViewData["Title"] = "Pagos";
+}
+<style>
+    .bg-custom-header {
+        background-color: #bc2b2b;
+        color: white;
+    }
+
+    /* Mejoras de diseño */
+    .actions-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .search-container {
+        flex-grow: 1;
+        max-width: 500px;
+    }
+
+    .pagination {
+        justify-content: center;
+        margin-top: 1.5rem;
+    }
+
+    .table-responsive {
+        margin-top: 1rem;
+    }
+
+    .header-container {
+        margin-bottom: 1.5rem;
+    }
+
+    .counter-badge {
+        background-color: #f8f9fa;
+        padding: 0.25rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        margin-left: 0.5rem;
+        border: 1px solid #dee2e6;
+    }
+
+    .estado-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.85rem;
+    }
+</style>
+
+<!-- Cabecera principal -->
+<div class="row mb-4 align-items-center p-3 shadow-sm rounded bg-light header-container">
+    <div class="col-auto">
+        <img alt="Logo SFA" src="imagenes/logoSFA.png" width="50" height="50" class="rounded-circle border">
+    </div>
+    <div class="col">
+        <h4 class="fw-bold text-primary mb-0">Gestión de Pagos</h4>
+        <small class="text-muted">&nbsp;Formulario para gestionar los pagos de mensualidades de los estudiantes. Este módulo centraliza la información sobre los estados de pago.</small>
+    </div>
+</div>
+
+<!-- Contenedor de acciones (búsqueda y contador) -->
+<div class="actions-container">
+    <!-- Buscador -->
+    <div class="search-container">
+        <form method="get" class="d-flex">
+            <div class="input-group">
+                <input type="text" name="TerminoBusqueda" value="@Model.TerminoBusqueda" class="form-control" placeholder="Buscar por nombre, documento o código...">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-search"></i>
+                </button>
+                @if (!string.IsNullOrEmpty(Model.TerminoBusqueda))
+                {
+                    <a href="@Url.Page("./Index")" class="btn btn-outline-secondary">
+                        <i class="fa-solid fa-times"></i>
+                    </a>
+                }
+            </div>
+        </form>
+    </div>
+
+    <!-- Contador -->
+    <div class="d-flex align-items-center">
+        <span class="counter-badge">
+            <i class="fa-solid fa-money-bill-wave"></i> @Model.matriculaInfos.Count Registros
+        </span>
+    </div>
+</div>
+
+<!-- Tabla de datos con responsive -->
+<div class="table-responsive">
+    <table class="table table-hover table-bordered table-striped">
+        <thead class="bg-custom-header text-white text-center">
+            <tr>
+                <th>TAM</th>
+                <th>NOMBRE</th>
+                <th>DOCUMENTO</th>
+                <th>CORREO</th>
+                <th>ACTIVO</th>
+                <th>GRADO</th>
+                <th>AÑO LECTIVO</th>
+                <th>ESTADO DE PAGO</th>
+                <th class="text-center">ACCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.MatriculasPagosPagedList.Any())
+            {
+                @foreach (var alumno in Model.MatriculasPagosPagedList)
+                {
+                    <tr>
+                        <td>@alumno.Codigo</td>
+                        <td>@alumno.Nombre</td>
+                        <td>@alumno.Documento</td>
+                        <td>@alumno.Email</td>
+                        <td class="text-center">
+                            @if (alumno.Activo.Equals("S", StringComparison.OrdinalIgnoreCase) ||
+                           alumno.Activo.Equals("Sí", StringComparison.OrdinalIgnoreCase) ||
+                           alumno.Activo.Equals("True", StringComparison.OrdinalIgnoreCase))
+                            {
+                                <span class="badge bg-success">Activo</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Inactivo</span>
+                            }
+                        </td>
+                        <td>@alumno.Grado</td>
+                        <td>@alumno.AnioEscolar</td>
+                        <td class="text-center">
+                            @if (alumno.PagoAlDia)
+                            {
+                                <span class="badge bg-success"><i class="fa-solid fa-check"></i> Al día</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger"><i class="fa-solid fa-times"></i> Pendiente</span>
+                            }
+                        </td>
+                        <td class="text-center">
+                            <a asp-page="Edit" asp-route-id="@alumno.IdMatricula" class="btn btn-primary btn-sm">
+                                <i class="fa-solid fa-money-bill-wave"></i>&nbsp;Cambiar Estado
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="9" class="text-center py-4">
+                        <i class="fa-solid fa-info-circle text-info me-2"></i>
+                        No se encontraron registros que coincidan con la búsqueda.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Paginación -->
+<div class="pagination">
+    @Html.PagedListPager(Model.MatriculasPagosPagedList,
+            page => Url.Page(null, new { Pagina = page, TerminoBusqueda = Model.TerminoBusqueda }),
+            new PagedListRenderOptions
+    {
+        LiElementClasses = new string[] { "page-item" },
+        PageClasses = new string[] { "page-link" },
+        UlElementClasses = new string[] { "pagination" }
+    })
+</div>

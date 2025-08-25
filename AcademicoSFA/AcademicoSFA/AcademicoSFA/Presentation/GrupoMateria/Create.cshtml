@@ -1,0 +1,46 @@
+﻿@page
+@model AcademicoSFA.Pages.GrupoAcadMateria.CreateModel
+
+@{
+    ViewData["Title"] = "Crear Grupo Académico y Materia";
+}
+<div class="row">
+    <div class="col-md-12">
+        <h4>
+            <img alt="Imagen" src="../imagenes/logoSFA.png" width="35" height="35" />
+            Asignar Materia a un Curso
+        </h4>
+    </div>
+</div>
+<hr />
+<div class="alert alert-info mt-3" role="alert">
+    <i class="fa-solid fa-info-circle"></i> &nbsp;Formulario para asignar una materia a un curso.
+</div>
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-3">
+            <div class="form-group">
+                <label asp-for="GrupoAcadMateria.IdGrupoAcad" class="control-label">Grupo Académico</label>
+                <select asp-for="GrupoAcadMateria.IdGrupoAcad" class="form-control" asp-items="ViewBag.GruposAcad"></select>
+                <span asp-validation-for="GrupoAcadMateria.IdGrupoAcad" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="form-group">
+                <label asp-for="GrupoAcadMateria.IdMateria" class="control-label">Materia</label>
+                <select asp-for="GrupoAcadMateria.IdMateria" class="form-control" asp-items="ViewBag.Materias"></select>
+                <span asp-validation-for="GrupoAcadMateria.IdMateria" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <partial name="Acciones/_RegistrarCrud" />
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

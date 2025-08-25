@@ -1,0 +1,61 @@
+﻿@page
+@model AcademicoSFA.Pages.GrupoAcadMateria.IndexModel
+
+
+@{
+    ViewData["Title"] = "Grupos Académicos y Materias";
+}
+<style>
+    .bg-custom-header {
+        background-color: #bc2b2b;
+        color: white;
+    }
+</style>
+<!-- Cabecera principal -->
+<div class="row mb-4 align-items-center p-3 shadow-sm rounded bg-light header-container">
+    <div class="col-auto">
+        <img alt="Logo SFA" src="~/imagenes/logoSFA.png" width="50" height="50" class="rounded-circle border">
+    </div>
+    <div class="col">
+        <h4 class="fw-bold text-primary mb-0">Gestión de Materias por Grupo Académico</h4>
+        <small class="text-muted">  &nbsp;Formulario para la gestión de materias por grupo académico.</small>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-6">
+        <a class="btn btn-success" asp-page="Create">
+            <i class="fa-solid fa-plus"></i> &nbsp; Asignar
+        </a>
+    </div>
+</div>
+<table class="table table-hover table-bordered table-striped">
+    <thead class="bg-custom-header text-center">
+        <tr>
+            <th>
+                GRUPO ACADÉMICO
+            </th>
+            <th>
+                MATERIAS
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewData["GruposAcadMaterias"] as IEnumerable<dynamic>)
+        {
+            <tr class="text-center">
+                <td>@item.GrupoGrado</td>
+                <td>@item.Materia</td>
+                <td class="text-center">
+                    <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-secondary">
+                        <i class="fa-solid fa-pen-square"></i>&nbsp;Modificar
+                    </a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-danger">
+                        <i class="fa-solid fa-trash"></i>&nbsp;Eliminar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

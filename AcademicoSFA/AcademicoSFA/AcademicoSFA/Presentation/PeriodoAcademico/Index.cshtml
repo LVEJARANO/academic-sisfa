@@ -1,0 +1,96 @@
+﻿@page
+@model AcademicoSFA.Pages.PeriodoAcademico.IndexModel
+@{
+    ViewData["Title"] = "Periodos Académicos";
+}
+
+<style>
+    .bg-custom-header {
+        background-color: #bc2b2b;
+        color: white;
+    }
+</style>
+<!-- Cabecera principal -->
+<div class="row mb-4 align-items-center p-3 shadow-sm rounded bg-light header-container">
+    <div class="col-auto">
+        <img alt="Logo SFA" src="~/imagenes/logoSFA.png" width="50" height="50" class="rounded-circle border">
+    </div>
+    <div class="col">
+        <h4 class="fw-bold text-primary mb-0">Gestión de Periodos Académicos</h4>
+        <small class="text-muted">
+            &nbsp;En este formulario puedes gestionar los periodos académicos del colegio, asociados a cada año lectivo. Puedes definir las fechas de inicio y fin para cada periodo.
+        </small>
+    </div>
+</div>
+
+<div class="alert alert-warning mt-3" role="alert">
+    <i class="fa-solid fa-exclamation-triangle"></i> &nbsp;
+    Nota: Los periodos académicos deben estar dentro del rango de fechas del año lectivo al que pertenecen. Verifica las fechas antes de guardar.
+</div>
+<div class="alert alert-success mt-3" role="alert">
+    <i class="fa-solid fa-check-circle"></i> &nbsp;
+    Los periodos académicos mostrados corresponden al año lectivo activo actualmente.
+</div>
+
+<!-- Solo muestra los periodos del año lectivo activo -->
+<p class="text-end">
+    @Model.PeriodoAcademico.Count Registros
+</p>
+<p class="mt-3">
+    <a class="btn btn-success" asp-page="Create">
+        <i class="fa-solid fa-plus"></i> &nbsp;Crear Periodo Académico
+    </a>
+</p>
+<table class="table table-hover table-bordered table-striped">
+    <thead class="bg-custom-header text-center">
+        <tr>
+            <th>
+                AÑO LECTIVO
+            </th>
+            <th>
+                NÚMERO
+            </th>
+            <th>
+                NOMBRE
+            </th>
+            <th>
+                FECHA INICIO
+            </th>
+            <th>
+                FECHA FIN
+            </th>
+            <th>ACCIONES</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.PeriodoAcademico)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Periodo.AnioEscolar)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.NumeroPeriodo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td class="text-center">
+                    @item.FechaInicio.ToString("dd/MM/yyyy")
+                </td>
+                <td class="text-center">
+                    @item.FechaFin.ToString("dd/MM/yyyy")
+                </td>
+                <td class="text-center">
+                    <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-secondary">
+                        <i class="fa-solid fa-pen-square">
+                        </i>&nbsp; Modificar
+                    </a>|
+                    <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-danger">
+                        <i class="fa-solid fa-trash"></i> &nbsp; Eliminar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,391 @@
+﻿@page
+@model AcademicoSFA.Pages.RegistroNotas.RegistroManualModel
+@{
+    ViewData["Title"] = "Registro Manual de Notas";
+}
+
+<div class="container-fluid mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">@ViewData["Title"]</h2>
+            <a href="./Index" class="btn btn-light">
+                <i class="fas fa-arrow-left me-2"></i> Volver al listado
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-header bg-info text-white">
+                            <h4 class="mb-0"><i class="fas fa-search me-2"></i> Buscar Estudiante</h4>
+                        </div>
+                        <div class="card-body">
+                            <form method="get" id="formBusqueda">
+                                <div class="mb-3">
+                                    <label for="searchTerm" class="form-label">Buscar por código o nombre:</label>
+                                    <div class="input-group">
+                                        <input type="text" id="searchTerm" name="searchTerm" class="form-control" 
+                                               value="@Model.SearchTerm" placeholder="Ingrese código o nombre" required />
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                    <small class="form-text text-muted">Ingrese al menos 3 caracteres para buscar</small>
+                                </div>
+                            </form>
+
+                            @if (Model.EstudiantesEncontrados != null && Model.EstudiantesEncontrados.Count > 0)
+                            {
+                                <div class="list-group mt-3">
+                                    <h5>Resultados de la búsqueda:</h5>
+                                    @foreach (var estudiante in Model.EstudiantesEncontrados)
+                                    {
+                                        <a href="?estudianteId=@estudiante.IdParticipante&codigo=@estudiante.Codigo" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <div class="fw-bold">@estudiante.NombreCompleto</div>
+                                                <small>Código: @estudiante.Codigo</small>
+                                            </div>
+                                            <span class="badge bg-primary rounded-pill">Seleccionar</span>
+                                        </a>
+                                    }
+                                </div>
+                            }
+                            else if (!string.IsNullOrEmpty(Model.SearchTerm))
+                            {
+                                <div class="alert alert-warning mt-3">
+                                    <i class="fas fa-exclamation-triangle me-2"></i> No se encontraron estudiantes con ese criterio.
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    @if (Model.EstudianteSeleccionado != null)
+                    {
+                        <div class="card mb-4">
+                            <div class="card-header bg-success text-white">
+                                <h4 class="mb-0"><i class="fas fa-user me-2"></i> Estudiante Seleccionado</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="avatar-placeholder bg-primary text-white rounded-circle d-flex justify-content-center align-items-center me-3"
+                                         style="width: 60px; height: 60px; font-size: 24px;">
+                                        @Model.EstudianteSeleccionado.NombreCompleto.Substring(0, 1).ToUpper()
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-1">@Model.EstudianteSeleccionado.NombreCompleto</h5>
+                                        <div><strong>Código:</strong> @Model.EstudianteSeleccionado.Codigo</div>
+                                        <div><strong>Documento:</strong> @Model.EstudianteSeleccionado.Documento</div>
+                                        <div><strong>Email:</strong> @(Model.EstudianteSeleccionado.Email ?? "No registrado")</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="col-md-8">
+                    @if (Model.EstudianteSeleccionado != null)
+                    {
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h4 class="mb-0"><i class="fas fa-edit me-2"></i> Registro de Notas</h4>
+                            </div>
+                            <div class="card-body">
+                                <form method="post" id="formRegistroNotas">
+                                    <input type="hidden" name="IdParticipante" value="@Model.EstudianteSeleccionado.IdParticipante" />
+                                    <input type="hidden" name="Codigo" value="@Model.EstudianteSeleccionado.Codigo" />
+                                    
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Seleccione materia:</label>
+                                            <select class="form-select mb-3" name="IdMateria" required>
+                                                <option value="">-- Seleccione una materia --</option>
+                                                @foreach (var materia in Model.Materias)
+                                                {
+                                                    <option value="@materia.Id">@materia.Nombre</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Periodo académico:</label>
+                                            <select class="form-select mb-3" name="IdPeriodoAcademico" required>
+
+                                                @foreach (var periodo in Model.PeriodosAcademicos)
+                                                {
+
+                                                        <option value="@periodo.Id" selected>@periodo.Nombre</option>
+
+        
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="card mb-4">
+                                        <div class="card-header bg-success text-white">
+                                            <h5 class="mb-0">Saber Ser (30%)</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Heteroevaluación:</label>
+                                                        <input type="number" class="form-control" name="NotaSer1" min="0" max="5" step="0.1" />
+                                                        <small class="form-text text-muted">Evaluación del docente</small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Autoevaluación:</label>
+                                                        <input type="number" class="form-control" name="NotaSer2" min="0" max="5" step="0.1" />
+                                                        <small class="form-text text-muted">Evaluación propia</small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Coevaluación:</label>
+                                                        <input type="number" class="form-control" name="NotaSer3" min="0" max="5" step="0.1" />
+                                                        <small class="form-text text-muted">Evaluación de compañeros</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card mb-4">
+                                        <div class="card-header bg-warning text-dark">
+                                            <h5 class="mb-0">Saber Hacer (35%)</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                @for (int i = 1; i <= 4; i++)
+                                                {
+                                                    <div class="col-md-3">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Nota @i:</label>
+                                                            <input type="number" class="form-control" name="NotaHacer@(i)" min="0" max="5" step="0.1" />
+                                                            <small class="form-text text-muted">Aplicación práctica</small>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card mb-4">
+                                        <div class="card-header bg-info text-white">
+                                            <h5 class="mb-0">Saber Saber (35%)</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                @for (int i = 1; i <= 4; i++)
+                                                {
+                                                    <div class="col-md-3">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Nota @i:</label>
+                                                            <input type="number" class="form-control" name="NotaSaber@(i)" min="0" max="5" step="0.1" />
+                                                            <small class="form-text text-muted">Conocimiento teórico</small>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label">Examen Final:</label>
+                                        <input type="number" class="form-control" name="ExamenFinal" min="0" max="5" step="0.1" />
+                                        <small class="form-text text-muted">Evaluación final del curso</small>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label">Observaciones:</label>
+                                        <textarea class="form-control" name="Observacion" rows="3" maxlength="255"></textarea>
+                                        <small class="form-text text-muted">Máximo 255 caracteres</small>
+                                    </div>
+
+                                    <div class="d-flex justify-content-end">
+                                        <button type="reset" class="btn btn-secondary me-2">
+                                            <i class="fas fa-eraser me-2"></i> Limpiar Campos
+                                        </button>
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="fas fa-save me-2"></i> Guardar Notas
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                    else if (!string.IsNullOrEmpty(Model.SearchTerm))
+                    {
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i> Seleccione un estudiante para registrar sus notas.
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i> Busque un estudiante para comenzar el registro manual de notas.
+                                </div>
+                                <div class="text-center p-4">
+                                    <i class="fas fa-user-graduate fa-5x text-muted mb-3"></i>
+                                    <p class="text-muted">Ingrese el código o nombre del estudiante en el campo de búsqueda.</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.NotificacionExito)
+    {
+        <div class="alert alert-success mt-4 alert-dismissible fade show">
+            <i class="fas fa-check-circle me-2"></i> Las notas se han guardado correctamente.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+</div>
+
+<!-- Contenedor de notificaciones Toast -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <!-- Las notificaciones toast se insertarán aquí dinámicamente -->
+</div>
+
+@section Scripts {
+    <script>
+        // Función para mostrar una notificación toast
+        function showToast(title, message, type = 'success', duration = 5000) {
+            // Generar un ID único para el toast
+            const toastId = 'toast-' + Date.now();
+            
+            // Determinar la clase de color según el tipo
+            let bgClass = 'bg-success';
+            let iconClass = 'fa-check-circle';
+            
+            if (type === 'warning') {
+                bgClass = 'bg-warning text-dark';
+                iconClass = 'fa-exclamation-circle';
+            } else if (type === 'danger' || type === 'error') {
+                bgClass = 'bg-danger';
+                iconClass = 'fa-times-circle';
+            } else if (type === 'info') {
+                bgClass = 'bg-info text-dark';
+                iconClass = 'fa-info-circle';
+            }
+            
+            // Crear el HTML del toast
+            const toastHtml = `
+                <div id="${toastId}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="${duration}">
+                    <div class="toast-header ${bgClass} text-white">
+                        <i class="fas ${iconClass} me-2"></i>
+                        <strong class="me-auto">${title}</strong>
+                        <small>Ahora</small>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                </div>
+            `;
+            
+            // Añadir el toast al contenedor
+            $('.toast-container').append(toastHtml);
+            
+            // Inicializar y mostrar el toast
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement);
+            toast.show();
+            
+            // Eliminar el toast del DOM después de ocultarse
+            $(toastElement).on('hidden.bs.toast', function () {
+                $(this).remove();
+            });
+        }
+
+        // Función para mostrar notificaciones desde TempData
+        function showTempDataToasts() {
+            @if (TempData["ToastTitle"] != null && TempData["ToastMessage"] != null)
+            {
+                <text>
+                showToast('@TempData["ToastTitle"]', '@TempData["ToastMessage"]', '@(TempData["ToastType"] ?? "success")');
+                </text>
+            }
+            
+            @if (TempData["MultipleToasts"] != null)
+            {
+                <text>
+                try {
+                    const toasts = JSON.parse('@Html.Raw(TempData["MultipleToasts"])');
+                    toasts.forEach(toast => {
+                        showToast(toast.Title, toast.Message, toast.Type, toast.Duration);
+                    });
+                } catch (e) {
+                    console.error('Error al procesar notificaciones toast:', e);
+                }
+                </text>
+            }
+        }
+        
+        $(document).ready(function() {
+            // Inicializar los toasts al cargar la página
+            showTempDataToasts();
+            
+            // Validación del formulario de búsqueda
+            $("#formBusqueda").on("submit", function(e) {
+                const searchTerm = $("#searchTerm").val().trim();
+                if (searchTerm.length < 3) {
+                    e.preventDefault();
+                    showToast("Atención", "Ingrese al menos 3 caracteres para buscar", "warning");
+                    return false;
+                }
+                return true;
+            });
+            
+            // Validación del formulario de registro de notas
+            $("#formRegistroNotas").on("submit", function(e) {
+                const materiaId = $("select[name='IdMateria']").val();
+                if (!materiaId) {
+                    e.preventDefault();
+                    showToast("Error", "Debe seleccionar una materia", "error");
+                    return false;
+                }
+                
+                // Verificar que al menos haya una nota
+                let hayNotas = false;
+                $("input[type='number']").each(function() {
+                    if ($(this).val()) {
+                        hayNotas = true;
+                        return false; // Romper el bucle
+                    }
+                });
+                
+                if (!hayNotas) {
+                    e.preventDefault();
+                    showToast("Error", "Debe ingresar al menos una nota", "error");
+                    return false;
+                }
+                
+                // Mostrar mensaje de procesamiento
+                showToast("Procesando", "Guardando las notas...", "info");
+                
+                return true;
+            });
+            
+            // Si hay notificación de éxito, mostrar un toast
+            @if (Model.NotificacionExito)
+            {
+                <text>
+                showToast("Éxito", "Las notas han sido guardadas correctamente", "success");
+                </text>
+            }
+        });
+    </script>
+}

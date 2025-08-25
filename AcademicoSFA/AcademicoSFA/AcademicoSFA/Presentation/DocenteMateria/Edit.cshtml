@@ -1,0 +1,66 @@
+﻿@page
+@model AcademicoSFA.Pages.DocenteMateria.EditModel
+
+@{
+    ViewData["Title"] = "Editar";
+}
+<div class="row mb-4 align-items-center p-3 shadow-sm rounded bg-light">
+    <div class="col-auto">
+        <img alt="Logo SFA" src="~/imagenes/logoSFA.png" width="50" height="50" class="rounded-circle border">
+    </div>
+    <div class="col">
+        <h4 class="fw-bold text-primary mb-0">Modificar Carga Docente</h4>
+        <small class="text-muted">Formulario para actualizar la asignación de materias a docentes.</small>
+    </div>
+</div>
+<hr />
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="DocenteMateriaGrupoAcad.Id" />
+    <div class="row">
+        <div class="col-3">
+            <div class="form-group">
+                <label asp-for="DocenteMateriaGrupoAcad.IdParticipante" class="control-label">Docente</label>
+                <select asp-for="DocenteMateriaGrupoAcad.IdParticipante" class="form-control" asp-items="ViewBag.IdParticipante"></select>
+                <span asp-validation-for="DocenteMateriaGrupoAcad.IdParticipante" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="form-group">
+                <label asp-for="DocenteMateriaGrupoAcad.IdMateria" class="control-label">Materia</label>
+                <select asp-for="DocenteMateriaGrupoAcad.IdMateria" class="form-control" asp-items="ViewBag.IdMateria"></select>
+                <span asp-validation-for="DocenteMateriaGrupoAcad.IdMateria" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="form-group">
+                <label asp-for="DocenteMateriaGrupoAcad.IdGrupoAcad" class="control-label">Grupo Académico</label>
+                <select asp-for="DocenteMateriaGrupoAcad.IdGrupoAcad" class="form-control" asp-items="ViewBag.IdGrupoAcad"></select>
+                <span asp-validation-for="DocenteMateriaGrupoAcad.IdGrupoAcad" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i>&nbsp;Actualizar
+                </button>
+                <a asp-page="./Index" class="btn btn-secondary">
+                    <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Regresar
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

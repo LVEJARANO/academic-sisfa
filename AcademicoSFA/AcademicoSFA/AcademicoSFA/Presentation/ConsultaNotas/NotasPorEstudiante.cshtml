@@ -1,0 +1,544 @@
+﻿@page
+@model AcademicoSFA.Pages.ReportesNotas.NotasPorCodigoEstudianteModel
+@{
+    ViewData["Title"] = "Notas por Código de Estudiante";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+    /* Estilos específicos para la página de notas */
+    .notas-container {
+        --primary-color: #4361ee;
+        --secondary-color: #3f37c9;
+        --accent-color: #4895ef;
+        --text-color-notas: #2b2d42;
+        --light-bg: #f8f9fa;
+        --border-color: #dee2e6;
+        --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        --excelente-color: #43aa8b;
+        --buena-color: #90be6d;
+        --regular-color: #f9c74f;
+        --baja-color: #f94144;
+        color: var(--text-color-notas);
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Sección de encabezado */
+    .header-section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .header-title {
+        margin: 0;
+    }
+
+        .header-title h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .header-title p {
+            color: var(--secondary-color);
+            margin: 0.5rem 0 0 0;
+        }
+
+    /* Filtros */
+    .filter-section {
+        background-color: var(--light-bg);
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        box-shadow: var(--card-shadow);
+    }
+
+    .filter-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .filter-group {
+        flex: 1;
+        min-width: 200px;
+    }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 0.95rem;
+            background-color: white;
+        }
+
+    .filter-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.2s;
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+    /* Info card del estudiante */
+    .student-card {
+        display: flex;
+        background-color: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: var(--card-shadow);
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .student-avatar {
+        width: 80px;
+        height: 80px;
+        background-color: var(--light-bg);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: var(--primary-color);
+    }
+
+    .student-info {
+        flex: 1;
+    }
+
+    .student-name {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 0.3rem;
+    }
+
+    .student-code {
+        color: #666;
+        margin-bottom: 0.5rem;
+    }
+
+    .student-stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 0.3rem;
+    }
+
+    .stat-value {
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    /* Materia card */
+    .materias-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .materia-card {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+    }
+
+    .materia-header {
+        background-color: var(--light-bg);
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .materia-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin: 0;
+    }
+
+    .materia-body {
+        padding: 1rem;
+    }
+
+    /* Tabla de notas */
+    .notas-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+    }
+
+        .notas-table th,
+        .notas-table td {
+            padding: 0.5rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .notas-table th {
+            background-color: #f1f3f5;
+            font-weight: 600;
+            color: #495057;
+        }
+
+    .nota-value {
+        font-weight: 600;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        display: inline-block;
+    }
+
+    /* Colores por rendimiento */
+    .nota-excelente {
+        background-color: var(--excelente-color);
+        color: white;
+    }
+
+    .nota-buena {
+        background-color: var(--buena-color);
+        color: white;
+    }
+
+    .nota-regular {
+        background-color: var(--regular-color);
+        color: #333;
+    }
+
+    .nota-baja {
+        background-color: var(--baja-color);
+        color: white;
+    }
+
+    /* Observaciones */
+    .observacion-cell {
+        text-align: left;
+        font-style: italic;
+        color: #666;
+        max-width: 300px;
+    }
+
+    /* Estado vacío */
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        background-color: var(--light-bg);
+        border-radius: 8px;
+        margin-top: 1rem;
+    }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #adb5bd;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .empty-state h3 {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+        }
+
+        .empty-state p {
+            color: #666;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+    /* Alerta */
+    .alert {
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .alert-warning {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .alert i {
+        font-size: 1.1rem;
+    }
+
+    /* Responsivo */
+    @@media (max-width: 768px) {
+        .header-section
+
+    {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .filter-row {
+        flex-direction: column;
+    }
+
+    .filter-group {
+        width: 100%;
+    }
+
+    .student-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .materias-container {
+        grid-template-columns: 1fr;
+    }
+
+    }
+</style>
+<!-- Cabecera principal -->
+<div class="row mb-4 align-items-center p-3 shadow-sm rounded bg-light header-container">
+    <div class="col-auto">
+        <img alt="Logo SFA" src="~/imagenes/logoSFA.png" width="50" height="50" class="rounded-circle border">
+    </div>
+    <div class="col">
+        <h4 class="fw-bold text-primary mb-0">Reporte de Notas por Código de Estudiante</h4>
+        <small class="text-muted">Consulta todas las notas detalladas de un estudiante específico en un periodo académico.</small>
+    </div>
+</div>
+<div class="notas-container">
+    @if (!string.IsNullOrEmpty(Model.MensajeError))
+    {
+        <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle"></i> @Model.MensajeError
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.MensajeExito))
+    {
+        <div class="alert alert-success">
+            <i class="fas fa-check-circle"></i> @Model.MensajeExito
+        </div>
+    }
+
+    <div class="filter-section">
+        <form method="get" id="filterForm">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="CodigoBusqueda">Código del Estudiante:</label>
+                    <input type="text" id="CodigoBusqueda" name="CodigoBusqueda" value="@Model.CodigoBusqueda" class="form-control" placeholder="Ingrese el código del estudiante">
+                </div>
+                <div class="filter-group">
+                    <label for="PeriodoId">Periodo Académico:</label>
+                    <select id="PeriodoId" name="PeriodoId" class="form-control">
+                        @foreach (var item in Model.PeriodosAcademicos)
+                        {
+                            if (item.Selected)
+                            {
+                                <option value="@item.Value" selected>@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="filter-buttons">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Buscar
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="window.print()">
+                    <i class="fas fa-print"></i> Imprimir
+                </button>
+            </div>
+        </form>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.NombreEstudiante))
+    {
+        <div class="student-card">
+            <div class="student-avatar">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <div class="student-info">
+                <div class="student-name">@Model.NombreEstudiante</div>
+                <div class="student-code">Código: @Model.CodigoEstudiante</div>
+                <div class="student-stats">
+                    <div class="stat-item">
+                        <div class="stat-label">Materias</div>
+                        <div class="stat-value">@Model.MateriasConNotas.Count</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Grado</div>
+                        <div class="stat-value">@Model.GradoEstudiante</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Periodo</div>
+                        <div class="stat-value">
+                            @(Model.PeriodosAcademicos.FirstOrDefault(p => p.Selected)?.Text ?? "N/A")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (Model.MateriasConNotas != null && Model.MateriasConNotas.Any())
+        {
+            <div class="materias-container">
+                @foreach (var materia in Model.MateriasConNotas)
+                {
+                    <div class="materia-card">
+                        <div class="materia-header">
+                            <h3 class="materia-title">@materia.NombreMateria</h3>
+                        </div>
+                        <div class="materia-body">
+                            @if (materia.Notas.Any())
+                            {
+                                <table class="notas-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Saber</th>
+                                            <th>Hacer</th>
+                                            <th>Ser</th>
+                                            <th>Observaciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var nota in materia.Notas)
+                                        {
+                                            <tr>
+                                                <td>@nota.FechaRegistro.ToString("dd/MM/yyyy")</td>
+                                                <td>
+                                                    <span class="nota-value @GetNotaClass(nota.NotaSaber)">
+                                                        @(nota.NotaSaber?.ToString("N2") ?? "N/A")
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="nota-value @GetNotaClass(nota.NotaHacer)">
+                                                        @(nota.NotaHacer?.ToString("N2") ?? "N/A")
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="nota-value @GetNotaClass(nota.NotaSer)">
+                                                        @(nota.NotaSer?.ToString("N2") ?? "N/A")
+                                                    </span>
+                                                </td>
+                                                <td class="observacion-cell">
+                                                    @(string.IsNullOrEmpty(nota.Observacion) ? "Sin observaciones" : nota.Observacion)
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <p class="text-center text-muted">No hay notas registradas para esta materia.</p>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="fas fa-clipboard-list"></i>
+                <h3>No hay notas registradas</h3>
+                <p>No se encontraron calificaciones para el estudiante en el periodo seleccionado.</p>
+            </div>
+        }
+    }
+    else if (!string.IsNullOrEmpty(Model.CodigoBusqueda))
+    {
+        <div class="empty-state">
+            <i class="fas fa-user-slash"></i>
+            <h3>Estudiante no encontrado</h3>
+            <p>No se encontró ningún estudiante con el código especificado.</p>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="fas fa-search"></i>
+            <h3>Buscar un estudiante</h3>
+            <p>Ingresa el código del estudiante y selecciona un periodo para ver sus calificaciones.</p>
+        </div>
+    }
+</div>
+
+@functions {
+    public string GetNotaClass(decimal? nota)
+    {
+        if (!nota.HasValue) return "";
+
+        return nota.Value switch
+        {
+            var n when n >= 4.0m => "nota-excelente",
+            var n when n >= 3.0m => "nota-buena",
+            var n when n >= 2.0m => "nota-regular",
+            _ => "nota-baja"
+        };
+    }
+}

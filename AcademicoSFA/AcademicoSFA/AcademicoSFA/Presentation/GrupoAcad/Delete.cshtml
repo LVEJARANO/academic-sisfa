@@ -1,0 +1,57 @@
+﻿@page
+@model AcademicoSFA.Pages.GrupoAcad.DeleteModel
+
+@{
+    ViewData["Title"] = "¿Desea eliminar este grupo académico?";
+}
+<div class="row">
+    <div class="col-md-12">
+        <h4>
+            <img alt="Imagen" src="../imagenes/logoSFA.png" width="35" height="35" />
+            Eliminar grupo académico
+        </h4>
+    </div>
+</div>
+<hr />
+<div class="card-body">
+    <div class="alert alert-info mt-3" role="alert">
+        <i class="fa-solid fa-info-circle"></i> &nbsp;Formulario para eliminar un grupo académmico.
+    </div>
+    <h3>@ViewData["Title"]</h3>
+    <div>
+        <h4>GrupoAcad</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.GrupoAcad.Grado)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.GrupoAcad.Grado.NomGrado)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.GrupoAcad.NomGrupo)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.GrupoAcad.NomGrupo)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.GrupoAcad.Periodo)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.GrupoAcad.Periodo.AnioEscolar)
+            </dd>
+
+        </dl>
+    </div>
+</div>
+<div class="card-footer">
+    <form method="post">
+        <input type="hidden" asp-for="GrupoAcad.Id" />
+        <Button type="submit" class="btn btn-danger me-3">
+            <i class="fa-solid fa-trash"></i>&nbsp;Eliminar
+        </Button> |
+        <a asp-page="./Index" class="btn btn-secondary">
+            <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Regresar
+        </a>
+    </form>
+</div>

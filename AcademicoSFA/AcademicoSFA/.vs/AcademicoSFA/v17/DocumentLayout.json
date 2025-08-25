@@ -1,0 +1,281 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|d:\\academicosfa_pruebas\\academicosfa\\academicosfa\\academicosfa\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|solutionrelative:academicosfa\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|d:\\academicosfa_pruebas\\academicosfa\\academicosfa\\academicosfa\\presentation\\iniciosesion\\login.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|solutionrelative:academicosfa\\presentation\\iniciosesion\\login.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|d:\\academicosfa_pruebas\\academicosfa\\academicosfa\\academicosfa\\presentation\\consultanotas\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|solutionrelative:academicosfa\\presentation\\consultanotas\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|d:\\academicosfa_pruebas\\academicosfa\\academicosfa\\academicosfa\\infrastructure\\repositories\\notasrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|solutionrelative:academicosfa\\infrastructure\\repositories\\notasrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|d:\\academicosfa_pruebas\\academicosfa\\academicosfa\\academicosfa\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|solutionrelative:academicosfa\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|d:\\academicosfa_pruebas\\academicosfa\\academicosfa\\academicosfa\\domain\\monitoring\\sisfametrics.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|solutionrelative:academicosfa\\domain\\monitoring\\sisfametrics.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|d:\\academicosfa_pruebas\\academicosfa\\academicosfa\\academicosfa\\domain\\monitoring\\isisfametrics.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|solutionrelative:academicosfa\\domain\\monitoring\\isisfametrics.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|d:\\academicosfa_pruebas\\academicosfa\\academicosfa\\academicosfa\\domain\\interfaces\\inotasrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|solutionrelative:academicosfa\\domain\\interfaces\\inotasrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|d:\\academicosfa_pruebas\\academicosfa\\academicosfa\\academicosfa\\presentation\\consultanotas\\notaspormateriamodel.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|solutionrelative:academicosfa\\presentation\\consultanotas\\notaspormateriamodel.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|d:\\academicosfa_pruebas\\academicosfa\\academicosfa\\academicosfa\\presentation\\consultanotas\\notaspormateriamodel.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|solutionrelative:academicosfa\\presentation\\consultanotas\\notaspormateriamodel.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|d:\\academicosfa_pruebas\\academicosfa\\academicosfa\\academicosfa\\presentation\\consultanotas\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|solutionrelative:academicosfa\\presentation\\consultanotas\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|d:\\academicosfa_pruebas\\academicosfa\\academicosfa\\academicosfa\\presentation\\consultanotas\\notasporestudiante.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|solutionrelative:academicosfa\\presentation\\consultanotas\\notasporestudiante.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|d:\\academicosfa_pruebas\\academicosfa\\academicosfa\\academicosfa\\presentation\\alumno\\create.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|solutionrelative:academicosfa\\presentation\\alumno\\create.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|d:\\academicosfa_pruebas\\academicosfa\\academicosfa\\academicosfa\\domain\\interfaces\\ialumnorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|solutionrelative:academicosfa\\domain\\interfaces\\ialumnorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|d:\\academicosfa_pruebas\\academicosfa\\academicosfa\\academicosfa\\infrastructure\\repositories\\matricularepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|solutionrelative:academicosfa\\infrastructure\\repositories\\matricularepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|d:\\academicosfa_pruebas\\academicosfa\\academicosfa\\academicosfa\\domain\\interfaces\\imatricularepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E3D4A56-B32B-40C1-BFB4-900F4A1D78A2}|AcademicoSFA\\AcademicoSFA.csproj|solutionrelative:academicosfa\\domain\\interfaces\\imatricularepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Program.cs",
+              "RelativeDocumentMoniker": "AcademicoSFA\\Program.cs",
+              "ToolTip": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Program.cs",
+              "RelativeToolTip": "AcademicoSFA\\Program.cs",
+              "ViewState": "AgIAAFIAAAAAAAAAAADgv5oAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-07T15:35:48.31Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "NotasPorMateriaModel.cshtml.cs",
+              "DocumentMoniker": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Presentation\\ConsultaNotas\\NotasPorMateriaModel.cshtml.cs",
+              "RelativeDocumentMoniker": "AcademicoSFA\\Presentation\\ConsultaNotas\\NotasPorMateriaModel.cshtml.cs",
+              "ToolTip": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Presentation\\ConsultaNotas\\NotasPorMateriaModel.cshtml.cs",
+              "RelativeToolTip": "AcademicoSFA\\Presentation\\ConsultaNotas\\NotasPorMateriaModel.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAE8AAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-07T21:22:11.802Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "NotasPorMateriaModel.cshtml",
+              "DocumentMoniker": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Presentation\\ConsultaNotas\\NotasPorMateriaModel.cshtml",
+              "RelativeDocumentMoniker": "AcademicoSFA\\Presentation\\ConsultaNotas\\NotasPorMateriaModel.cshtml",
+              "ToolTip": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Presentation\\ConsultaNotas\\NotasPorMateriaModel.cshtml",
+              "RelativeToolTip": "AcademicoSFA\\Presentation\\ConsultaNotas\\NotasPorMateriaModel.cshtml",
+              "ViewState": "AgIAAEYCAAAAAAAAAIBJwIQCAABiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-07-07T22:10:48.41Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Presentation\\ConsultaNotas\\Index.cshtml",
+              "RelativeDocumentMoniker": "AcademicoSFA\\Presentation\\ConsultaNotas\\Index.cshtml",
+              "ToolTip": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Presentation\\ConsultaNotas\\Index.cshtml",
+              "RelativeToolTip": "AcademicoSFA\\Presentation\\ConsultaNotas\\Index.cshtml",
+              "ViewState": "AgIAAOYBAAAAAAAAAIBJwPgBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-07-07T22:12:32.671Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Login.cshtml.cs",
+              "DocumentMoniker": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Presentation\\InicioSesion\\Login.cshtml.cs",
+              "RelativeDocumentMoniker": "AcademicoSFA\\Presentation\\InicioSesion\\Login.cshtml.cs",
+              "ToolTip": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Presentation\\InicioSesion\\Login.cshtml.cs",
+              "RelativeToolTip": "AcademicoSFA\\Presentation\\InicioSesion\\Login.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-08T14:12:29.149Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\appsettings.json",
+              "RelativeDocumentMoniker": "AcademicoSFA\\appsettings.json",
+              "ToolTip": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\appsettings.json",
+              "RelativeToolTip": "AcademicoSFA\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-07-08T14:09:33.459Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml.cs",
+              "DocumentMoniker": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Presentation\\ConsultaNotas\\Index.cshtml.cs",
+              "RelativeDocumentMoniker": "AcademicoSFA\\Presentation\\ConsultaNotas\\Index.cshtml.cs",
+              "ToolTip": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Presentation\\ConsultaNotas\\Index.cshtml.cs",
+              "RelativeToolTip": "AcademicoSFA\\Presentation\\ConsultaNotas\\Index.cshtml.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAgwA8AAABDAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-08T14:12:06.593Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "NotasRepository.cs",
+              "DocumentMoniker": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Infrastructure\\Repositories\\NotasRepository.cs",
+              "RelativeDocumentMoniker": "AcademicoSFA\\Infrastructure\\Repositories\\NotasRepository.cs",
+              "ToolTip": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Infrastructure\\Repositories\\NotasRepository.cs",
+              "RelativeToolTip": "AcademicoSFA\\Infrastructure\\Repositories\\NotasRepository.cs",
+              "ViewState": "AgIAAM0AAAAAAAAAAAAowOYAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-08T14:11:47.142Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "SisfaMetrics.cs",
+              "DocumentMoniker": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Domain\\Monitoring\\SisfaMetrics.cs",
+              "RelativeDocumentMoniker": "AcademicoSFA\\Domain\\Monitoring\\SisfaMetrics.cs",
+              "ToolTip": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Domain\\Monitoring\\SisfaMetrics.cs",
+              "RelativeToolTip": "AcademicoSFA\\Domain\\Monitoring\\SisfaMetrics.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-08T14:25:04.093Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ISisfaMetrics.cs",
+              "DocumentMoniker": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Domain\\Monitoring\\ISisfaMetrics.cs",
+              "RelativeDocumentMoniker": "AcademicoSFA\\Domain\\Monitoring\\ISisfaMetrics.cs",
+              "ToolTip": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Domain\\Monitoring\\ISisfaMetrics.cs",
+              "RelativeToolTip": "AcademicoSFA\\Domain\\Monitoring\\ISisfaMetrics.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-08T14:23:26.82Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "INotasRepository.cs",
+              "DocumentMoniker": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Domain\\Interfaces\\INotasRepository.cs",
+              "RelativeDocumentMoniker": "AcademicoSFA\\Domain\\Interfaces\\INotasRepository.cs",
+              "ToolTip": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Domain\\Interfaces\\INotasRepository.cs",
+              "RelativeToolTip": "AcademicoSFA\\Domain\\Interfaces\\INotasRepository.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-08T14:10:57.686Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "NotasPorEstudiante.cshtml",
+              "DocumentMoniker": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Presentation\\ConsultaNotas\\NotasPorEstudiante.cshtml",
+              "RelativeDocumentMoniker": "AcademicoSFA\\Presentation\\ConsultaNotas\\NotasPorEstudiante.cshtml",
+              "ToolTip": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Presentation\\ConsultaNotas\\NotasPorEstudiante.cshtml",
+              "RelativeToolTip": "AcademicoSFA\\Presentation\\ConsultaNotas\\NotasPorEstudiante.cshtml",
+              "ViewState": "AgIAAGsBAAAAAAAAAIBJwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-07-07T22:11:43.655Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Create.cshtml.cs",
+              "DocumentMoniker": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Presentation\\Alumno\\Create.cshtml.cs",
+              "RelativeDocumentMoniker": "AcademicoSFA\\Presentation\\Alumno\\Create.cshtml.cs",
+              "ToolTip": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Presentation\\Alumno\\Create.cshtml.cs",
+              "RelativeToolTip": "AcademicoSFA\\Presentation\\Alumno\\Create.cshtml.cs",
+              "ViewState": "AgIAACsAAAAAAAAAAAAcwD4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-07T20:29:58.144Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "IAlumnoRepository.cs",
+              "DocumentMoniker": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Domain\\Interfaces\\IAlumnoRepository.cs",
+              "RelativeDocumentMoniker": "AcademicoSFA\\Domain\\Interfaces\\IAlumnoRepository.cs",
+              "ToolTip": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Domain\\Interfaces\\IAlumnoRepository.cs",
+              "RelativeToolTip": "AcademicoSFA\\Domain\\Interfaces\\IAlumnoRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-07T20:27:06.819Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "MatriculaRepository.cs",
+              "DocumentMoniker": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Infrastructure\\Repositories\\MatriculaRepository.cs",
+              "RelativeDocumentMoniker": "AcademicoSFA\\Infrastructure\\Repositories\\MatriculaRepository.cs",
+              "ToolTip": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Infrastructure\\Repositories\\MatriculaRepository.cs",
+              "RelativeToolTip": "AcademicoSFA\\Infrastructure\\Repositories\\MatriculaRepository.cs",
+              "ViewState": "AgIAAC4AAAAAAAAAAAA1wEYAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-07T20:21:33.869Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "IMatriculaRepository.cs",
+              "DocumentMoniker": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Domain\\Interfaces\\IMatriculaRepository.cs",
+              "RelativeDocumentMoniker": "AcademicoSFA\\Domain\\Interfaces\\IMatriculaRepository.cs",
+              "ToolTip": "D:\\AcademicoSFA_PRUEBAS\\AcademicoSFA\\AcademicoSFA\\AcademicoSFA\\Domain\\Interfaces\\IMatriculaRepository.cs",
+              "RelativeToolTip": "AcademicoSFA\\Domain\\Interfaces\\IMatriculaRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-07T20:20:54.854Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,184 @@
+﻿@page
+@using X.PagedList.Mvc.Core
+@model AcademicoSFA.Pages.Matricula.IndexModel
+@{
+    ViewData["Title"] = "Matrículas";
+}
+<style>
+    .bg-custom-header {
+        background-color: #bc2b2b;
+        color: white;
+    }
+
+    /* Mejoras de diseño */
+    .actions-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .search-container {
+        flex-grow: 1;
+        max-width: 500px;
+    }
+
+    .pagination {
+        justify-content: center;
+        margin-top: 1.5rem;
+    }
+
+    .table-responsive {
+        margin-top: 1rem;
+    }
+
+    .header-container {
+        margin-bottom: 1.5rem;
+    }
+
+    .counter-badge {
+        background-color: #f8f9fa;
+        padding: 0.25rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        margin-left: 0.5rem;
+        border: 1px solid #dee2e6;
+    }
+
+    .estado-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.85rem;
+    }
+
+    .estado-activo {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .estado-inactivo {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+</style>
+
+<!-- Cabecera principal -->
+<div class="row mb-4 align-items-center p-3 shadow-sm rounded bg-light header-container">
+    <div class="col-auto">
+        <img alt="Logo SFA" src="imagenes/logoSFA.png" width="50" height="50" class="rounded-circle border">
+    </div>
+    <div class="col">
+        <h4 class="fw-bold text-primary mb-0">Gestión de Matrículas</h4>
+        <small class="text-muted"> &nbsp;Formulario para la gestión de matrículas académicas de la institución. Este módulo centraliza toda la información necesaria para la administración de matrículas.</small>
+    </div>
+</div>
+
+<!-- Contenedor de acciones (búsqueda y botón crear) -->
+<div class="actions-container">
+    <!-- Buscador -->
+    <div class="search-container">
+        <form method="get" class="d-flex">
+            <div class="input-group">
+                <input type="text" name="TerminoBusqueda" value="@Model.TerminoBusqueda" class="form-control" placeholder="Buscar por nombre, código o grado...">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-search"></i>
+                </button>
+                @if (!string.IsNullOrEmpty(Model.TerminoBusqueda))
+                {
+                    <a href="@Url.Page("./Index")" class="btn btn-outline-secondary">
+                        <i class="fa-solid fa-times"></i>
+                    </a>
+                }
+            </div>
+        </form>
+    </div>
+
+    <!-- Botón crear y contador -->
+    <div class="d-flex align-items-center">
+        <span class="counter-badge">
+            <i class="fa-solid fa-graduation-cap"></i> @Model.Matriculas.Count Registros
+        </span>
+        <a class="btn btn-success ms-3" asp-page="Create">
+            <i class="fa-solid fa-plus"></i> &nbsp;Crear Matrícula
+        </a>
+    </div>
+</div>
+
+<!-- Tabla de datos con responsive -->
+<div class="table-responsive">
+    <table class="table table-hover table-bordered table-striped">
+        <thead class="bg-custom-header text-white text-center">
+            <tr>
+                <th>ID MATRÍCULA</th>
+                <th>TAM</th>
+                <th>NOMBRE</th>
+                <th>CORREO</th>
+                <th>ESTADO</th>
+                <th>GRADO</th>
+                <th>AÑO ESCOLAR</th>
+                <th class="text-center">ACCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.MatriculasPagedList.Any())
+            {
+                @foreach (var matricula in Model.MatriculasPagedList)
+                {
+                    <tr>
+                        <td>@matricula.IdMatricula</td>
+                        <td>@matricula.Codigo</td>
+                        <td>@matricula.Nombre</td>
+                        <td>@matricula.Email</td>
+                        <td class="text-center">
+                            @if (matricula.Activo.Equals("SI", StringComparison.OrdinalIgnoreCase))
+                            {
+                                <span class="estado-badge estado-activo">
+                                    <i class="fa-solid fa-check-circle"></i> Activo
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="estado-badge estado-inactivo">
+                                    <i class="fa-solid fa-times-circle"></i> Inactivo
+                                </span>
+                            }
+                        </td>
+                        <td>@matricula.Grado</td>
+                        <td>@matricula.AnioEscolar</td>
+                        <td class="text-center">
+                            <a asp-page="./Edit" asp-route-id="@matricula.IdMatricula" class="btn btn-secondary btn-sm">
+                                <i class="fa-solid fa-pen-square"></i>&nbsp;Modificar
+                            </a> |
+                            <a asp-page="./Delete" asp-route-id="@matricula.IdMatricula" class="btn btn-danger btn-sm">
+                                <i class="fa-solid fa-exchange-alt"></i>&nbsp;Cambiar Estado
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="8" class="text-center py-4">
+                        <i class="fa-solid fa-info-circle text-info me-2"></i>
+                        No se encontraron registros que coincidan con la búsqueda.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Paginación -->
+<div class="pagination">
+    @Html.PagedListPager(Model.MatriculasPagedList,
+            page => Url.Page(null, new { Pagina = page, TerminoBusqueda = Model.TerminoBusqueda }),
+            new PagedListRenderOptions
+    {
+        LiElementClasses = new string[] { "page-item" },
+        PageClasses = new string[] { "page-link" },
+        UlElementClasses = new string[] { "pagination" }
+    })
+</div>

@@ -1,0 +1,96 @@
+﻿@page
+@model AcademicoSFA.Pages.IndexModel
+@{
+    ViewData["Title"] = "Bienvenido a AcademicoSFA";
+    Layout = null;  // Sin layout para tener un diseño limpio en la página principal
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+
+    <!-- Incluye Bootstrap para estilos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            max-width: 600px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            text-align: center;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .logo img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 150px;
+        }
+
+        .btn-login {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 1.2rem;
+        }
+
+            .btn-login:hover {
+                background-color: #0056b3;
+            }
+
+        .welcome-message {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="card text-center">
+            <!-- Logo del sistema -->
+            <div class="logo">
+                <img src="~/imagenes/logoSFA.png" alt="Logo AcademicoSFA">
+            </div>
+
+            <!-- Título de bienvenida -->
+            <h2 class="card-title mt-4">Bienvenido al Sistema de Información Académico  SISFA</h2>
+
+            <!-- Mensaje de bienvenida -->
+            <p class="welcome-message">Sistema Académico para la Gestión de Docentes, Estudiantes y Académicos.</p>
+
+            <!-- Botón para ir al inicio de sesión -->
+            <form method="get" asp-page="/InicioSesion/Login">
+                <button type="submit" class="btn-login mt-4">Iniciar Sesión</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

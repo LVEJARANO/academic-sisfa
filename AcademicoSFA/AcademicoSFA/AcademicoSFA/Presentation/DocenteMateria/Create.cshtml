@@ -1,0 +1,77 @@
+﻿@page
+@model AcademicoSFA.Pages.DocenteMateriaGrupoAcad.CreateModel
+
+@{
+    ViewData["Title"] = "Asignar Docente, Materia y Grupo";
+}
+<style>
+    .bg-custom-header {
+        background-color: #bc2b2b;
+        color: white;
+    }
+</style>
+<div class="row mb-4 align-items-center p-3 shadow-sm rounded bg-light">
+    <div class="col-auto">
+        <img alt="Logo SFA" src="~/imagenes/logoSFA.png" width="50" height="50" class="rounded-circle border">
+    </div>
+    <div class="col">
+        <h4 class="fw-bold text-primary mb-0">Asignación de Cargas Académicas</h4>
+        <small class="text-muted">Formulario para registrar la asignación de materias a los docentes de la institución.</small>
+    </div>
+</div>
+
+<form method="post">
+
+    <div class="row">
+        <div class="col-3 form-floating">
+            <select asp-for="IdpartDoc" class="form-control">
+                <option value="">Seleccione una opción</option>
+                @foreach (var docentes in Model.Docentes)
+                {
+                    <option value="@docentes.Id">@($"{docentes.Nombre} {docentes.Apellido}")</option>
+                }
+            </select>
+            <span asp-validation-for="IdpartDoc" class="text-danger"></span>
+            <label>Docente</label>
+        </div>
+        <div class="col-3 form-floating">
+            <select id="DocenteMateriaGrupoAcad_IdMateria" asp-for="DocenteMateriaGrupoAcad.IdMateria" class="form-control" asp-items="ViewBag.Materias">
+                <option value="">Seleccione una opción</option>
+                @foreach (var materias in Model.Materias)
+                {
+                    <option value="@materias.Id">@($"{materias.NomMateria}")</option>
+                }
+            </select>
+            <span asp-validation-for="DocenteMateriaGrupoAcad.IdMateria" class="text-danger"></span>
+            <label>Materia</label>
+
+        </div>
+
+        <div class="col-3 form-floating">
+            <select id="DocenteMateriaGrupoAcad_IdGrupoAcad" asp-for="DocenteMateriaGrupoAcad.IdGrupoAcad" class="form-control">
+                <option value="">Seleccione una opción</option>
+                @foreach (var gruposGrados in Model.GradosGrupos)
+                {
+                    <option value="@gruposGrados.IdGrupoAcad">@($"{gruposGrados.GradoGrupo}")</option>
+                }
+            </select>
+            <span asp-validation-for="DocenteMateriaGrupoAcad.IdGrupoAcad" class="text-danger"></span>
+            <label>Grupo Académico</label>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <button type="submit" value="Create" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i>&nbsp;Registrar
+                </button>
+                <a asp-page="Index" class="btn btn-secondary">
+                    <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Regresar
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
+

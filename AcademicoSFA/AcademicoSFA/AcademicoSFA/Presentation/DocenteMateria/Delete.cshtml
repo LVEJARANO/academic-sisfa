@@ -1,0 +1,43 @@
+﻿@page
+@model AcademicoSFA.Pages.DocenteMateria.DeleteModel
+
+@{
+    ViewData["Title"] = "Eliminar carga docente ";
+}
+<div class="row mb-4 align-items-center p-3 shadow-sm rounded bg-light">
+    <div class="col-auto">
+        <img alt="Logo SFA" src="~/imagenes/logoSFA.png" width="50" height="50" class="rounded-circle border">
+    </div>
+    <div class="col">
+        <h4 class="fw-bold text-primary mb-0">Eliminar Carga Docente</h4>
+        <small class="text-muted">Formulario para gestionar la eliminación de asignaturas de la carga académica.</small>
+    </div>
+</div>
+<hr />
+<div class="alert alert-warning p-3 mb-4">
+    <i class="fas fa-exclamation-triangle me-2"></i>
+    <strong>Advertencia:</strong> Al eliminar asignaturas de su carga docente, esta información se perderá permanentemente y no podrá ser recuperada. Una vez confirmada esta acción, deberá iniciar un nuevo proceso de asignación si desea recuperar estas asignaturas en el futuro.
+</div>
+<div class="card-body text-center">
+    <h5 class="text-secondary mb-3">Docente</h5>
+    <h3 class="fw-bold">
+        @Html.DisplayFor(model => model.DocenteMateriaGrupoAcad.Participante.Nombre) @Html.DisplayFor(model => model.DocenteMateriaGrupoAcad.Participante.Apellido)
+    </h3>
+    <h5 class="text-secondary mb-3">Materia:</h5>
+    <h3 class="fw-bold">                @Html.DisplayFor(model => model.DocenteMateriaGrupoAcad.Materia.NomMateria)</h3>
+    <h5 class="text-secondary mb-3">Grupo Académico:</h5>
+    <h3 class="fw-bold">
+        @Html.DisplayFor(model => model.DocenteMateriaGrupoAcad.GrupoAcad.Grado.NomGrado) - @Html.DisplayFor(model => model.DocenteMateriaGrupoAcad.GrupoAcad.NomGrupo)
+    </h3>
+</div>
+<div class="card-footer">
+    <form method="post">
+        <input type="hidden" asp-for="DocenteMateriaGrupoAcad.Id" />
+        <Button type="submit" class="btn btn-danger me-3">
+            <i class="fa-solid fa-trash"></i>&nbsp;Eliminar
+        </Button> |
+        <a asp-page="./Index" class="btn btn-secondary">
+            <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Regresar
+        </a>
+    </form>
+</div>

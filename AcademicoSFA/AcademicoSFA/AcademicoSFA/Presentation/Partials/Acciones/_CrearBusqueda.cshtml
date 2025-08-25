@@ -1,0 +1,39 @@
+﻿
+@model CrearBusquedaViewModel
+
+<div class="row">
+    <div class="col-md-12">
+        <h4>
+            <img alt="Imagen" src="imagenes/logoSFA.png" width="35" height="35" />
+            Gestión de @Model.TituloPagina
+        </h4>
+    </div>
+</div>
+<hr />
+<div class="alert alert-info mt-3" role="alert">
+    <i class="fa-solid fa-info-circle"></i> &nbsp;Formulario para la gestión de @Model.TituloPagina de la institución.
+</div>
+<p class="text-end">
+    @Model.TotalRegistros Registros
+</p>
+<div class="row mb-3">
+    <div class="col-6">
+        <a class="btn btn-success" asp-page="Create">
+            <i class="fa-solid fa-plus"></i> &nbsp;@Model.TituloCrear
+        </a>
+    </div>
+    <div class="col-6">
+        <form>
+            <div class="input-group">
+                <input asp-for="TerminoBusqueda" class="form-control" placeholder="Término de Búsqueda" arial-label="Término de Búsqueda" />
+                <button name="botonBusqueda" id="botonBusqueda" type="submit" class="btn btn-outline-primary">
+                    <i class="fa-solid fa-magnifying-glass"></i>&nbsp;Buscar
+                </button>
+                <a asp-page="./Index" class="btn btn-outline-secondary">
+                    <i class="fa-solid fa-arrows-rotate"></i>&nbsp;Limpiar
+                </a>
+            </div>
+
+        </form>
+    </div>
+</div>

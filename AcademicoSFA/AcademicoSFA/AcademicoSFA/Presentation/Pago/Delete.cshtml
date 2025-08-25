@@ -1,0 +1,87 @@
+﻿@page
+@model AcademicoSFA.Pages.Pago.DeleteModel
+
+@{
+    ViewData["Title"] = "Eliminar Pago";
+}
+<style>
+    .bg-custom-header {
+        background-color: #bc2b2b;
+        color: white;
+    }
+</style>
+<div class="row mb-4 align-items-center p-3 shadow-sm rounded bg-light">
+    <div class="col-auto">
+        <img alt="Logo SFA" src="~/imagenes/logoSFA.png" width="50" height="50" class="rounded-circle border">
+    </div>
+    <div class="col">
+        <h4 class="fw-bold text-primary mb-0">Detalle de Pagos</h4>
+        <small class="text-muted">Eliminar pago.</small>
+    </div>
+</div>
+<hr />
+<div class="card-body">
+    <div class="alert alert-info mt-3" role="alert">
+        <i class="fa-solid fa-info-circle"></i> &nbsp;Formulario para desactivar un docente.
+        Al borrar el registro, se eliminará permanentemente de la base de datos. No podra recuperarlo.
+    </div>
+    <h3>@ViewData["Title"]</h3>
+    <div>
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DetallePagoModels.TAM)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DetallePagoModels.TAM)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DetallePagoModels.nombre)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DetallePagoModels.nombre)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PagoModel.TipoPago)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PagoModel.TipoPago)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PagoModel.FechaPago)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PagoModel.FechaPago)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PagoModel.Monto)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PagoModel.Monto)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PagoModel.EstadoPago)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PagoModel.EstadoPago)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PagoModel.MesPagado)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PagoModel.MesPagado)
+            </dd>
+        </dl>
+    </div>
+    <div class="card-footer">
+        <form method="post">
+            <input type="hidden" asp-for="PagoModel.Id" />
+            <Button type="submit" class="btn btn-danger me-3">
+                <i class="fa-solid fa-trash"></i>&nbsp;Eliminar
+            </Button> |
+            <a asp-page="./Index" class="btn btn-secondary">
+                <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Regresar
+            </a>
+        </form>
+    </div>
+</div>
+

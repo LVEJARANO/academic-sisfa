@@ -1,0 +1,66 @@
+﻿@page
+@model AcademicoSFA.Pages.Matricula.CreateModel
+
+@{
+    ViewData["Title"] = "Crear Matricula";
+}
+<div class="row">
+    <div class="col-md-12">
+        <h4>
+            <img alt="Imagen" src="../imagenes/logoSFA.png" width="35" height="35" />
+            Matricula de estudiantes
+        </h4>
+    </div>
+</div>
+<hr />
+<div class="alert alert-info mt-3" role="alert">
+    <i class="fa-solid fa-info-circle"></i> &nbsp;Formulario para matricular un estudiante.
+</div>
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title mb-4">
+                <i class="fa-solid fa-user-plus"></i> &nbsp;Matricular estudiante
+            </h5>
+            <div class="row">
+                <div class="col-3 form-floating">
+                    <input asp-for="MatriculaModels.Codigo" class="form-control" placeholder="TAM"/>
+                    <span asp-validation-for="MatriculaModels.Codigo" class="text-danger"></span>
+                    <label>TAM</label>
+                </div>
+                <div class="col-3 form-floating">
+                    <select asp-for="IdGrupoAcadSeleccionado" class="form-control">
+                        <option value="">Seleccione una opción</option>
+                        @foreach (var grupo in Model.GradosGrupos)
+                        {
+                            <option value="@grupo.IdGrupoAcad">@grupo.GradoGrupo</option>
+                        }
+                    </select>
+                    <label asp-for="IdGrupoAcadSeleccionado">Grupo</label>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <button type="submit" value="Create" class="btn btn-primary">
+                            <i class="fa-solid fa-floppy-disk"></i>&nbsp;Registrar
+                        </button>
+                        <a asp-page="Index" class="btn btn-secondary">
+                            <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Regresar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
